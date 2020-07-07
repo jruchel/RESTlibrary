@@ -55,5 +55,5 @@ public class AuthorsController {
 
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
-    
+
 }
