@@ -25,6 +25,20 @@ public class Author {
 
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        Author a2 = (Author) obj;
+        return a2.lastName.equals(lastName) && a2.firstName.equals(firstName) && sameBooks(a2.bibliography);
+    }
+
+    private boolean sameBooks(Set<Book> books) {
+        for (Book b : books) {
+            if (!this.bibliography.contains(b)) return false;
+        }
+
+        return books.size() == bibliography.size();
+    }
+
     public int getId() {
         return id;
     }

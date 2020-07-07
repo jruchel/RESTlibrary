@@ -19,6 +19,12 @@ public class Book {
     public Book() {
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        Book b2 = (Book) obj;
+        return b2.getTitle().equals(title) && b2.getAuthor().equals(author);
+    }
+
     public int getId() {
         return id;
     }

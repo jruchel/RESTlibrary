@@ -1,13 +1,14 @@
 package org.whatever.library.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 import org.whatever.library.services.BookService;
 
-import java.util.List;
+
 
 @RestController
 public class BooksController {
@@ -17,7 +18,7 @@ public class BooksController {
 
     @GetMapping("/books")
     public @ResponseBody
-    List<Book> getAllBooks() {
+    Iterable<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
 
@@ -27,22 +28,16 @@ public class BooksController {
         return bookService.getBookByID(id);
     }
 
-   /* @PostMapping(value = "/book", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addBook(@RequestBody Book book) {
-        bookService.save(book);
-    }*/
+    @PostMapping(value = "/book", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addBook(@RequestBody Book book) {
 
-    @GetMapping("/book/test")
-    public void addBook() {
-        Author author = new Author();
-        author.setFirstName("dwaw");
-        author.setLastName("dwadaw");
-
-        Book book = new Book();
-        book.setTitle("tytul");
-        book.setAuthor(author);
+        if (bookService.exists(book)) {
+            return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+        }
 
         bookService.save(book);
+        return new ResponseEntity(HttpStatus.ACCEPTED);
     }
+
 
 }
