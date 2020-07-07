@@ -1,5 +1,7 @@
 package org.whatever.library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,13 +9,15 @@ import javax.persistence.*;
 public class Book {
 
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column
     private String title;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @JsonIgnore
+    @ManyToOne( cascade = {CascadeType.ALL})
+    @JoinColumn(name = "author_id")
     private Author author;
 
     public Book() {

@@ -1,7 +1,9 @@
 package org.whatever.library.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "authors")
@@ -9,7 +11,7 @@ public class Author {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @Column(name = "firstName")
@@ -18,17 +20,17 @@ public class Author {
     @Column(name = "lastName")
     private String lastName;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = {CascadeType.ALL})
     private Set<Book> bibliography;
 
     public Author() {
-
+        bibliography = new HashSet<>();
     }
 
     @Override
     public boolean equals(Object obj) {
         Author a2 = (Author) obj;
-        return a2.lastName.equals(lastName) && a2.firstName.equals(firstName) && sameBooks(a2.bibliography);
+        return a2.lastName.equals(lastName) && a2.firstName.equals(firstName);
     }
 
     private boolean sameBooks(Set<Book> books) {
@@ -37,6 +39,22 @@ public class Author {
         }
 
         return books.size() == bibliography.size();
+    }
+
+    public Book getBook(int id) {
+        return bibliography.stream().filter(b -> b.getId() == id).collect(Collectors.toList()).get(0);
+    }
+
+    public void addBook(Book book) {
+        this.bibliography.add(book);
+        book.setAuthor(this);
+    }
+
+    public void addBooks(Iterable<Book> books) {
+        for (Book b : books) {
+            this.addBook(b);
+            b.setAuthor(this);
+        }
     }
 
     public int getId() {
@@ -69,5 +87,12 @@ public class Author {
 
     public void setBibliography(Set<Book> bibliography) {
         this.bibliography = bibliography;
+        assignBooks();
+    }
+
+    private void assignBooks() {
+        for(Book b: bibliography) {
+            b.setAuthor(this);
+        }
     }
 }
