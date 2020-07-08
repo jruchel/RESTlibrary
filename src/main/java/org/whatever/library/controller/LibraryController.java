@@ -36,7 +36,7 @@ public class LibraryController {
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(value = "/authors/{id}")
+    @PutMapping(value = "/authors/{id}")
     public ResponseEntity updateAuthor(@RequestBody Author author, @PathVariable int id) {
         if (libraryService.exists(author)) return new ResponseEntity(HttpStatus.CONFLICT);
         Author oldAuthor = getAuthorByID(id);
