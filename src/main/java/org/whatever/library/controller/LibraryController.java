@@ -8,8 +8,10 @@ import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 import org.whatever.library.services.LibraryService;
 
+import java.util.ArrayList;
 
-@RestController()
+
+@RestController
 public class LibraryController {
 
     @Autowired
@@ -34,6 +36,25 @@ public class LibraryController {
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
+    @PostMapping(value = "/authors/{id}")
+    public ResponseEntity updateAuthor(@RequestBody Author author, @PathVariable int id) {
+        if (libraryService.exists(author)) return new ResponseEntity(HttpStatus.CONFLICT);
+        Author oldAuthor = getAuthorByID(id);
+        author.setId(id);
+
+        oldAuthor.setFirstName(author.getFirstName());
+        oldAuthor.setLastName(author.getLastName());
+        for (Book b : oldAuthor.getBibliography()) {
+            deleteBook(id, b.getId());
+            if (oldAuthor.getBibliography() == null || oldAuthor.getBibliography().size() == 0) break;
+        }
+        oldAuthor.setBibliography(new ArrayList<Book>());
+        oldAuthor.setBibliography(author.getBibliography());
+        libraryService.save(oldAuthor);
+        return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
+
+
     @GetMapping("/authors/{id}/books")
     public @ResponseBody
     Iterable<Book> getAllBooks(@PathVariable int id) {
@@ -55,7 +76,7 @@ public class LibraryController {
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(value = "/authors/{id}/{bid}")
+    @DeleteMapping(value = "/authors/{id}/{bid}")
     public ResponseEntity deleteBook(@PathVariable int id, @PathVariable int bid) {
         if (libraryService.getBookByID(id, bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         Author author = getAuthorByID(id);
@@ -65,7 +86,7 @@ public class LibraryController {
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
-    @PostMapping(value = "/authors/{id}")
+    @DeleteMapping(value = "/authors/{id}")
     public ResponseEntity deleteAuthor(@PathVariable int id) {
         if (libraryService.getAuthorByID(id) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         libraryService.deleteAuthor(id);

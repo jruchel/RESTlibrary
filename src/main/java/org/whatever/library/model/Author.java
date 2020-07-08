@@ -1,6 +1,7 @@
 package org.whatever.library.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,10 +23,10 @@ public class Author {
     private String lastName;
 
     @OneToMany(mappedBy = "author", cascade = {CascadeType.ALL})
-    private Set<Book> bibliography;
+    private List<Book> bibliography;
 
     public Author() {
-        bibliography = new HashSet<>();
+        bibliography = new ArrayList<>();
     }
 
     @Override
@@ -89,11 +90,11 @@ public class Author {
         this.lastName = lastName;
     }
 
-    public Set<Book> getBibliography() {
+    public List<Book> getBibliography() {
         return bibliography;
     }
 
-    public void setBibliography(Set<Book> bibliography) {
+    public void setBibliography(List<Book> bibliography) {
         this.bibliography = bibliography;
         assignBooks();
     }
