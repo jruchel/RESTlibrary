@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 import org.whatever.library.repository.AuthorRepository;
+import org.whatever.library.repository.BookRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,30 +14,33 @@ import java.util.stream.Collectors;
 public class LibraryService {
 
     @Autowired
-    private AuthorRepository repository;
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
 
     public Iterable<Author> getAllAuthors() {
-        return repository.findAll();
+        return authorRepository.findAll();
     }
 
-    public Author getAuthorByID(int id) {
-        if (repository.findById(id).isPresent())
-            return repository.findById(id).get();
-        return null;
+    public Author getAuthorByID(int id) throws NullPointerException {
+        if (authorRepository.findById(id).isPresent())
+            return authorRepository.findById(id).get();
+        else throw new NullPointerException();
     }
 
     public void save(Author author) {
-        repository.save(author);
+        authorRepository.save(author);
     }
 
     public void addBooks(Author author, Iterable<Book> books) {
         author.addBooks(books);
-        repository.save(author);
+        authorRepository.save(author);
     }
 
     public void addBook(Author author, Book book) {
         author.addBook(book);
-        repository.save(author);
+        authorRepository.save(author);
     }
 
     public boolean exists(Author author) {
@@ -47,11 +51,27 @@ public class LibraryService {
         return false;
     }
 
+    public void deleteAuthor(int id) {
+        authorRepository.deleteById(id);
+    }
+
+    public void deleteBookByID(int bid) {
+        bookRepository.deleteById(bid);
+    }
+
+    private boolean containsID(int id) {
+        return getAuthorByID(id) != null;
+    }
+
+    private boolean containsBook(int id, int bid) {
+        return getBookByID(id, bid) != null;
+    }
+
     public Iterable<Book> getAllBooks(int aid) {
         return getAuthorByID(aid).getBibliography();
     }
 
-    public Book getBookByID(int aid, int bid) {
+    public Book getBookByID(int aid, int bid) throws NullPointerException {
         return getAuthorByID(aid).getBook(bid);
     }
 

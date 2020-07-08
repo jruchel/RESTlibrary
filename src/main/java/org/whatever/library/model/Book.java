@@ -16,7 +16,7 @@ public class Book {
     private String title;
 
     @JsonIgnore
-    @ManyToOne( cascade = {CascadeType.ALL})
+    @ManyToOne()
     @JoinColumn(name = "author_id")
     private Author author;
 

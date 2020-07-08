@@ -2,6 +2,7 @@ package org.whatever.library.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,10 @@ public class Author {
     }
 
     public Book getBook(int id) {
-        return bibliography.stream().filter(b -> b.getId() == id).collect(Collectors.toList()).get(0);
+        List<Book> booksWithID = bibliography.stream().filter(b -> b.getId() == id).collect(Collectors.toList());
+        if (booksWithID.size() > 0)
+            return booksWithID.get(0);
+        else return null;
     }
 
     public void addBook(Book book) {
@@ -55,6 +59,10 @@ public class Author {
             this.addBook(b);
             b.setAuthor(this);
         }
+    }
+
+    public void removeBook(int bid) {
+        bibliography.removeIf(b -> b.getId() == bid);
     }
 
     public int getId() {
@@ -91,7 +99,7 @@ public class Author {
     }
 
     private void assignBooks() {
-        for(Book b: bibliography) {
+        for (Book b : bibliography) {
             b.setAuthor(this);
         }
     }
