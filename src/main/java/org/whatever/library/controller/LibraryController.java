@@ -68,14 +68,14 @@ public class LibraryController {
     }
 
 
-    @GetMapping("/authors/search/authors/{name}")
+    @GetMapping("/authors/search/{name}")
     public @ResponseBody
     List<Author> getAuthorsNamed(@PathVariable String name, @RequestParam(required = false) String lastName) {
         if (lastName == null || lastName.isEmpty()) return libraryService.getAuthorsByName(name);
         return libraryService.getAuthorsNamed(name, lastName);
     }
 
-    @GetMapping("/authors/search/authors")
+    @GetMapping("/authors/search/")
     public @ResponseBody
     List<Author> findAuthorsWithBookTitled(@RequestParam("title") String title) {
         return libraryService.getAuthorsWithBookTitled(title);
