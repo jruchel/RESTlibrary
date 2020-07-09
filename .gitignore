@@ -1,6 +1,11 @@
 # From https://github.com/github/gitignore/blob/master/Gradle.gitignore
+gradle
+gradlew
+gradlew.bat
+
 .gradle
-build.gradle
+
+*.gradle
 /build/
 
 # Ignore Gradle GUI config
@@ -37,6 +42,7 @@ hs_err_pid*
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
+.idea
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/dictionaries
