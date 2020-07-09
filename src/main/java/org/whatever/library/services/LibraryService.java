@@ -7,6 +7,7 @@ import org.whatever.library.model.Book;
 import org.whatever.library.repository.AuthorRepository;
 import org.whatever.library.repository.BookRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,26 @@ public class LibraryService {
     public void addBook(Author author, Book book) {
         author.addBook(book);
         authorRepository.save(author);
+    }
+
+    public List<Author> getAuthorsByName(String firstName) {
+        return authorRepository.findAuthorsByName(firstName);
+    }
+
+    public List<Author> getAuthorsByLastName(String lastName) {
+        return authorRepository.findAuthorsByLastName(lastName);
+    }
+
+    public List<Author> getAuthorsNamed(String firstName, String lastName) {
+        return authorRepository.findAuthorsByName(firstName).stream().filter(a -> a.getLastName().equals(lastName)).collect(Collectors.toList());
+    }
+
+    public List<Author> getAuthorsWithBookTitled(String title) {
+        List<Author> authors = new ArrayList<>();
+        for (Integer i : bookRepository.getAuthorIDsWithTitle(title)) {
+            authors.add(getAuthorByID(i));
+        }
+        return authors;
     }
 
     public boolean exists(Author author) {

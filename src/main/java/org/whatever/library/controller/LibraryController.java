@@ -6,10 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
-import org.whatever.library.repository.BookRepository;
 import org.whatever.library.services.LibraryService;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -67,6 +66,21 @@ public class LibraryController {
     Book getBookByID(@PathVariable int id, @PathVariable int bid) {
         return getAuthorByID(id).getBook(bid);
     }
+
+
+    @GetMapping("/authors/search/authors/{name}")
+    public @ResponseBody
+    List<Author> getAuthorsNamed(@PathVariable String name, @RequestParam(required = false) String lastName) {
+        if (lastName == null || lastName.isEmpty()) return libraryService.getAuthorsByName(name);
+        return libraryService.getAuthorsNamed(name, lastName);
+    }
+
+    @GetMapping("/authors/search/authors")
+    public @ResponseBody
+    List<Author> findAuthorsWithBookTitled(@RequestParam("title") String title) {
+        return libraryService.getAuthorsWithBookTitled(title);
+    }
+
 
     @PostMapping(value = "/authors/{id}/book")
     public ResponseEntity addBook(@PathVariable int id, @RequestBody Book book) {
