@@ -52,7 +52,7 @@ public class LibraryService {
         return authorRepository.findAuthorsByLastName(lastName);
     }
 
-    public List<Author> getAuthorsNamed(String firstName, String lastName) {
+    public List<Author> getAuthorsByName(String firstName, String lastName) {
         return authorRepository.findAuthorsByName(firstName).stream().filter(a -> a.getLastName().equals(lastName)).collect(Collectors.toList());
     }
 

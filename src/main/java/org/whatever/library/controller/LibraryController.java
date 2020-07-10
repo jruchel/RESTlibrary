@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 import org.whatever.library.services.LibraryService;
+import org.whatever.library.utils.CollectionUtils;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,6 +19,8 @@ public class LibraryController {
 
     @Autowired
     private LibraryService libraryService;
+    @Autowired
+    private CollectionUtils<Author> authorCollectionUtils;
 
     @CrossOrigin
     @GetMapping("/authors")
@@ -73,18 +77,21 @@ public class LibraryController {
     }
 
     @CrossOrigin
-    @GetMapping("/authors/search/{name}")
+    @GetMapping("/authors/search")
     public @ResponseBody
-    List<Author> getAuthorsNamed(@PathVariable String name, @RequestParam(required = false) String lastName) {
-        if (lastName == null || lastName.isEmpty()) return libraryService.getAuthorsByName(name);
-        return libraryService.getAuthorsNamed(name, lastName);
-    }
+    List<Author> searchAuthors(
+            @RequestParam(required = false, name = "name") String name,
+            @RequestParam(required = false, name = "lastName") String lastName,
+            @RequestParam(required = false, name = "title") String title) {
+        List<Author> byName = null;
+        List<Author> byTitle = null;
+        List<Author> byLastName = null;
+        if (!(name == null || name.isEmpty())) byName = libraryService.getAuthorsByName(name);
+        if (!(lastName == null || lastName.isEmpty())) byLastName = libraryService.getAuthorsByLastName(lastName);
+        if (!(title == null || title.isEmpty())) byTitle = libraryService.getAuthorsWithBookTitled(title);
 
-    @CrossOrigin
-    @GetMapping("/authors/search/")
-    public @ResponseBody
-    List<Author> findAuthorsWithBookTitled(@RequestParam("title") String title) {
-        return libraryService.getAuthorsWithBookTitled(title);
+
+        return authorCollectionUtils.getCommonObjects(byName, byLastName, byTitle);
     }
 
     @CrossOrigin
