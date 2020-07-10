@@ -8,6 +8,7 @@ import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 import org.whatever.library.services.LibraryService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -33,7 +34,7 @@ public class LibraryController {
 
     @CrossOrigin
     @PostMapping(value = "/authors")
-    public ResponseEntity addAuthor(@RequestBody Author author) {
+    public ResponseEntity addAuthor(@RequestBody @Valid Author author) {
         if (libraryService.exists(author)) return new ResponseEntity(HttpStatus.CONFLICT);
         libraryService.save(author);
         return new ResponseEntity(HttpStatus.ACCEPTED);
@@ -41,7 +42,7 @@ public class LibraryController {
 
     @CrossOrigin
     @PutMapping(value = "/authors/{id}")
-    public ResponseEntity updateAuthor(@RequestBody Author author, @PathVariable int id) {
+    public ResponseEntity updateAuthor(@RequestBody @Valid Author author, @PathVariable int id) {
         Author oldAuthor = getAuthorByID(id);
 
         oldAuthor.setFirstName(author.getFirstName());

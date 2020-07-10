@@ -1,5 +1,7 @@
 package org.whatever.library.model;
 
+import org.whatever.library.validation.NameConstraint;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +17,11 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NameConstraint
     @Column(name = "firstName")
     private String firstName;
 
+    @NameConstraint
     @Column(name = "lastName")
     private String lastName;
 
