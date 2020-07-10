@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class CollectionUtils<E> {
 
 
-    public List<E> getCommonObjects(List<List<E>> lists) {
+    private List<E> getCommonObjects(List<List<E>> lists) {
         //If there is only one list return it
         if (lists.size() == 1) return lists.get(0);
 
@@ -34,12 +34,19 @@ public class CollectionUtils<E> {
         return getCommonObjects(listsCondensed);
     }
 
+    /**
+     * A method that takes in a bunch of lists and finds common objects among them, if a list is null, it's treated as if it wasn't there
+     *
+     * @param lists Lists to process
+     * @return a lists of common objects
+     */
     public List<E> getCommonObjects(List<E>... lists) {
         List<List<E>> asList = Arrays.stream(lists).collect(Collectors.toList());
         return getCommonObjects(asList);
     }
 
     private List<E> getCommonOfTwoLists(List<E> list1, List<E> list2) {
+        //Only considering non null lists
         if (list1 == null) return list2;
         if (list2 == null) return list1;
         List<E> result = new ArrayList<>();
@@ -50,7 +57,6 @@ public class CollectionUtils<E> {
         }
         return result;
     }
-
 
     public List<E> getSumOfObjects(List<E>... lists) {
         Set<E> result = new HashSet<>();
