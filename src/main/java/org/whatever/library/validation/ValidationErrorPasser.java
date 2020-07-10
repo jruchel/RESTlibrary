@@ -27,6 +27,7 @@ public class ValidationErrorPasser {
             String stemp = getMessageFromField(s);
             if (stemp != null) result.add(stemp);
         }
+        markAllAsRead();
         return result;
     }
 
@@ -39,6 +40,7 @@ public class ValidationErrorPasser {
                 sb.append("\n");
             }
         }
+        markAllAsRead();
         return sb.toString();
     }
 
