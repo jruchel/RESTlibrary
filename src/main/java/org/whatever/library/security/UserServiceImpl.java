@@ -1,4 +1,4 @@
-package org.whatever.library.services;
+package org.whatever.library.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.whatever.library.repository.RoleRepository;
 import org.whatever.library.repository.UserRepository;
-import org.whatever.library.security.User;
+import org.whatever.library.services.UserService;
 
 import java.util.HashSet;
 

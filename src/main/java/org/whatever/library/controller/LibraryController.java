@@ -9,7 +9,7 @@ import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 import org.whatever.library.security.User;
 import org.whatever.library.services.LibraryService;
-import org.whatever.library.services.SecurityService;
+import org.whatever.library.security.SecurityService;
 import org.whatever.library.services.UserService;
 import org.whatever.library.utils.CollectionUtils;
 import org.whatever.library.validation.UserValidator;
@@ -144,18 +144,18 @@ public class LibraryController {
 
     @CrossOrigin
     @PostMapping("/registration")
-    public String registration(@RequestBody User userForm, BindingResult bindingResult) {
+    public User registration(@RequestBody User userForm, BindingResult bindingResult) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return "User not saved";
+            return userForm;
         }
 
         userService.save(userForm);
 
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
-        return "User saved";
+        return userForm;
     }
 
 }

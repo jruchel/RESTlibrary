@@ -1,4 +1,4 @@
-package org.whatever.library.services;
+package org.whatever.library.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

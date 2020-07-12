@@ -1,4 +1,4 @@
-package org.whatever.library.services;
+package org.whatever.library.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

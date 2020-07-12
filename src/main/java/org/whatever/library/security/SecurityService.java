@@ -1,4 +1,4 @@
-package org.whatever.library.services;
+package org.whatever.library.security;
 
 public interface SecurityService {
     String findLoggedInUsername();
