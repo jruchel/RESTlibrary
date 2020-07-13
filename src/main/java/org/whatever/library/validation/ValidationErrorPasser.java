@@ -53,7 +53,7 @@ public class ValidationErrorPasser {
         messages.remove(parameter);
     }
 
-    public void markAllAsRead() {
+    private void markAllAsRead() {
         messages.clear();
         messages = new HashMap<>();
     }

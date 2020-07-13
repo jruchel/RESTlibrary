@@ -2,8 +2,8 @@ package org.whatever.library.validation;
 
 public class NameValidator extends Validator<NameConstraint, String> {
 
-    private int upperLimit = 20;
-    private int lowerLimit = 2;
+    private final int upperLimit = 20;
+    private final int lowerLimit = 2;
 
     public boolean Constraint_isCorrectFormat(String name) {
         if (!name.matches("[A-Z][a-z]+")) {

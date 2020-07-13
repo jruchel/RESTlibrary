@@ -30,9 +30,10 @@ public class RoleService {
     }
 
     @PostConstruct
-    public void initRoles() {
+    private void initRoles() {
         for (Role r : createBasicRoles()) {
-            roleRepository.save(r);
+            if (roleRepository.getRoleByName(r.getName()) == null)
+                roleRepository.save(r);
         }
     }
 

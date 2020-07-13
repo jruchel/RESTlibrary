@@ -13,11 +13,11 @@ public class UserValidator implements Validator {
     @Autowired
     private UserService userService;
 
-    private int usernameMaxLength = 32;
-    private int usernameMinLength = 5;
+    private final int usernameMaxLength = 32;
+    private final int usernameMinLength = 5;
 
-    private int passwordMaxLength = 32;
-    private int passwordMinLength = 8;
+    private final int passwordMaxLength = 32;
+    private final int passwordMinLength = 8;
 
     @Override
     public boolean supports(Class<?> aClass) {

@@ -2,13 +2,15 @@ package org.whatever.library.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.whatever.library.repository.RoleRepository;
 import org.whatever.library.repository.UserRepository;
 import org.whatever.library.services.UserService;
 
-import java.util.HashSet;
+import javax.annotation.PostConstruct;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,7 +24,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
+        user.giveRole(roleRepository.getRoleByName("USER"));
+        userRepository.save(user);
+    }
+
+    @DependsOn("RoleService")
+    @PostConstruct
+    private void createAdmin() {
+        if (userRepository.findByUsername("admin") != null) return;
+        User user = new User();
+        user.setUsername("admin");
+        user.setPassword("hasloAdmina");
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.giveRole(roleRepository.getRoleByName("ADMIN"));
         userRepository.save(user);
     }
 

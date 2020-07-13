@@ -34,6 +34,7 @@ public class Author {
 
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof Author)) return false;
         Author a2 = (Author) obj;
         return a2.lastName.equals(lastName) && a2.firstName.equals(firstName);
     }

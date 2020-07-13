@@ -1,6 +1,7 @@
 package org.whatever.library.security;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,11 @@ public class User {
 
     @ManyToMany
     private Set<Role> roles;
+
+
+    public User() {
+        roles = new HashSet<>();
+    }
 
     public Long getId() {
         return id;
@@ -56,6 +62,14 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void giveRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public void revokeRole(String role) {
+        this.roles.removeIf(r -> r.getName().equals(role));
     }
 }
 
