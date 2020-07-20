@@ -152,7 +152,6 @@ public class LibraryController {
         }
 
         userService.save(userForm);
-
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 
         return userForm;

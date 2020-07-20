@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.whatever.library.repository.UserRepository;
-import org.whatever.library.security.Role;
-import org.whatever.library.security.User;
 
 import java.util.HashSet;
 import java.util.Set;
