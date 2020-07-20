@@ -6,7 +6,6 @@ gradlew.bat
 .gradle
 
 *.gradle
-!build.gradle
 /build/
 
 # Ignore Gradle GUI config
