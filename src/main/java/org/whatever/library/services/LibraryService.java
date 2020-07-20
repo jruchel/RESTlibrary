@@ -66,10 +66,7 @@ public class LibraryService {
 
     public boolean exists(Author author) {
         List<Author> authorsList = (List<Author>) getAllAuthors();
-        if (authorsList.stream().filter(authorInList -> authorInList.equals(author)).collect(Collectors.toList()).size() > 0) {
-            return true;
-        }
-        return false;
+        return authorsList.stream().filter(authorInList -> authorInList.equals(author)).count() > 0;
     }
 
     public void deleteAuthor(int id) {

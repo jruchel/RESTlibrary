@@ -25,6 +25,7 @@ public class Book {
 
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof Book)) return false;
         Book b2 = (Book) obj;
         return b2.getTitle().equals(title) && b2.getAuthor().equals(author);
     }

@@ -18,8 +18,8 @@ public class DependencyDownloader implements Runnable {
     private final String siteurl = "https://mvnrepository.com";
     private final String search = "/search?q=";
 
-    private String artifactRegex = ".*(\\/artifact\\/[a-z.-]+\\/[a-z.-]+).*";
-    private String resultsRegex = ".*Found\\s\\<b\\>(\\d+)\\<\\/b\\>\\sresults.*";
+    private final String artifactRegex = ".*(\\/artifact\\/[a-z.-]+\\/[a-z.-]+).*";
+    private final String resultsRegex = ".*Found\\s\\<b\\>(\\d+)\\<\\/b\\>\\sresults.*";
 
 
     private String extractArtifactFromUrl(String url) {

@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NameConstraint {
-    public String message() default "Name is not valid";
+    String message() default "Name is not valid";
 
     Class<?>[] groups() default {};
 

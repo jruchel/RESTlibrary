@@ -51,8 +51,7 @@ public class CollectionUtils<E> {
         if (list2 == null) return list1;
         List<E> result = new ArrayList<>();
         List<E> sum = getSumOfObjects(list1, list2);
-        for (int i = 0; i < sum.size(); i++) {
-            E object = sum.get(i);
+        for (E object : sum) {
             if (list1.contains(object) && list2.contains(object)) result.add(object);
         }
         return result;
@@ -61,8 +60,8 @@ public class CollectionUtils<E> {
     public List<E> getSumOfObjects(List<E>... lists) {
         Set<E> result = new HashSet<>();
 
-        for (int i = 0; i < lists.length; i++) {
-            result.addAll(lists[i]);
+        for (List<E> list : lists) {
+            result.addAll(list);
         }
         return new ArrayList<>(result);
     }

@@ -3,14 +3,18 @@ package org.whatever.library.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
+import org.whatever.library.security.User;
 import org.whatever.library.services.LibraryService;
+import org.whatever.library.security.SecurityService;
+import org.whatever.library.services.UserService;
 import org.whatever.library.utils.CollectionUtils;
+import org.whatever.library.validation.UserValidator;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,6 +25,15 @@ public class LibraryController {
     private LibraryService libraryService;
     @Autowired
     private CollectionUtils<Author> authorCollectionUtils;
+
+    @Autowired
+    private UserValidator userValidator;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SecurityService securityService;
 
     @CrossOrigin
     @GetMapping("/authors")
@@ -121,6 +134,27 @@ public class LibraryController {
         if (libraryService.getAuthorByID(id) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         libraryService.deleteAuthor(id);
         return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
+
+    @CrossOrigin
+    @GetMapping("/users")
+    public User findByUsername(@RequestBody String username) {
+        return userService.findByUsername(username);
+    }
+
+    @CrossOrigin
+    @PostMapping("/registration")
+    public User registration(@RequestBody User userForm, BindingResult bindingResult) {
+        userValidator.validate(userForm, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return userForm;
+        }
+
+        userService.save(userForm);
+        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+
+        return userForm;
     }
 
 }
