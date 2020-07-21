@@ -37,15 +37,13 @@ public class LibraryController {
 
     @CrossOrigin
     @GetMapping("/authors")
-    public @ResponseBody
-    Iterable<Author> getAllAuthors() {
+    public Iterable<Author> getAllAuthors() {
         return libraryService.getAllAuthors();
     }
 
     @CrossOrigin
     @GetMapping("/authors/{id}")
-    public @ResponseBody
-    Author getAuthorByID(@PathVariable int id) {
+    public Author getAuthorByID(@PathVariable int id) {
         return libraryService.getAuthorByID(id);
     }
 
@@ -77,22 +75,19 @@ public class LibraryController {
 
     @CrossOrigin
     @GetMapping("/authors/{id}/books")
-    public @ResponseBody
-    Iterable<Book> getAllBooks(@PathVariable int id) {
+    public Iterable<Book> getAllBooks(@PathVariable int id) {
         return getAuthorByID(id).getBibliography();
     }
 
     @CrossOrigin
     @GetMapping("/authors/{id}/{bid}")
-    public @ResponseBody
-    Book getBookByID(@PathVariable int id, @PathVariable int bid) {
+    public Book getBookByID(@PathVariable int id, @PathVariable int bid) {
         return getAuthorByID(id).getBook(bid);
     }
 
     @CrossOrigin
     @GetMapping("/authors/search")
-    public @ResponseBody
-    List<Author> searchAuthors(
+    public List<Author> searchAuthors(
             @RequestParam(required = false, name = "name") String name,
             @RequestParam(required = false, name = "lastName") String lastName,
             @RequestParam(required = false, name = "title") String title) {
@@ -150,7 +145,6 @@ public class LibraryController {
         if (bindingResult.hasErrors()) {
             return userForm;
         }
-
         userService.save(userForm);
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
 

@@ -14,7 +14,8 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     @Autowired
     private ValidationErrorPasser errorPasser;
 
-    @RequestMapping("error")
+    //ALL
+    @RequestMapping("/error")
     public @ResponseBody
     List<String>
     handleError() {

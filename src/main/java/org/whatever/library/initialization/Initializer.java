@@ -37,11 +37,11 @@ public class Initializer {
     private Set<Role> createBasicRoles() {
         Set<Role> roles = new HashSet<>();
         Role admin = new Role();
-        admin.setName("ADMIN");
+        admin.setName("ROLE_ADMIN");
         Role user = new Role();
-        user.setName("USER");
+        user.setName("ROLE_USER");
         Role mod = new Role();
-        mod.setName("MODERATOR");
+        mod.setName("ROLE_MODERATOR");
         roles.add(admin);
         roles.add(user);
         roles.add(mod);

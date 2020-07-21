@@ -8,6 +8,7 @@ import org.whatever.library.repository.RoleRepository;
 import org.whatever.library.repository.UserRepository;
 import org.whatever.library.services.UserService;
 
+import java.util.HashSet;
 
 
 @Service
@@ -22,7 +23,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.giveRole(roleRepository.getRoleByName("USER"));
+        user.setRoles(new HashSet<>());
+        user.giveRole(roleRepository.getRoleByName("ROLE_USER"));
         userRepository.save(user);
     }
 
