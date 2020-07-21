@@ -13,7 +13,6 @@ import org.whatever.library.security.SecurityService;
 import org.whatever.library.services.UserService;
 import org.whatever.library.utils.CollectionUtils;
 import org.whatever.library.validation.UserValidator;
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -41,11 +40,14 @@ public class LibraryController {
         return libraryService.getAllAuthors();
     }
 
+
     @CrossOrigin
-    @GetMapping("/authors/{id}")
-    public Author getAuthorByID(@PathVariable int id) {
+    @GetMapping(value = "/authors/{id}")
+    public Author getAuthorByID(@PathVariable("ID of the author") int id) {
         return libraryService.getAuthorByID(id);
     }
+
+
 
     @CrossOrigin
     @PostMapping(value = "/authors")
@@ -55,9 +57,10 @@ public class LibraryController {
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
+
     @CrossOrigin
     @PutMapping(value = "/authors/{id}")
-    public ResponseEntity updateAuthor(@RequestBody @Valid Author author, @PathVariable int id) {
+    public ResponseEntity updateAuthor(@RequestBody @Valid Author author, @PathVariable("ID of the author") int id) {
         Author oldAuthor = getAuthorByID(id);
 
         oldAuthor.setFirstName(author.getFirstName());
@@ -75,13 +78,13 @@ public class LibraryController {
 
     @CrossOrigin
     @GetMapping("/authors/{id}/books")
-    public Iterable<Book> getAllBooks(@PathVariable int id) {
+    public Iterable<Book> getAllBooks(@PathVariable("ID of the author") int id) {
         return getAuthorByID(id).getBibliography();
     }
 
     @CrossOrigin
     @GetMapping("/authors/{id}/{bid}")
-    public Book getBookByID(@PathVariable int id, @PathVariable int bid) {
+    public Book getBookByID(@PathVariable("ID of the author") int id, @PathVariable("ID of the book") int bid) {
         return getAuthorByID(id).getBook(bid);
     }
 
@@ -104,7 +107,7 @@ public class LibraryController {
 
     @CrossOrigin
     @PostMapping(value = "/authors/{id}/book")
-    public ResponseEntity addBook(@PathVariable int id, @RequestBody Book book) {
+    public ResponseEntity addBook(@PathVariable("ID of the author") int id, @RequestBody Book book) {
         Author author = getAuthorByID(id);
         author.addBook(book);
         libraryService.save(author);
@@ -114,7 +117,7 @@ public class LibraryController {
 
     @CrossOrigin
     @DeleteMapping(value = "/authors/{id}/{bid}")
-    public ResponseEntity deleteBook(@PathVariable int id, @PathVariable int bid) {
+    public ResponseEntity deleteBook(@PathVariable("ID of the author") int id, @PathVariable int bid) {
         if (libraryService.getBookByID(id, bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         Author author = getAuthorByID(id);
         author.removeBook(bid);
@@ -125,7 +128,7 @@ public class LibraryController {
 
     @CrossOrigin
     @DeleteMapping(value = "/authors/{id}")
-    public ResponseEntity deleteAuthor(@PathVariable int id) {
+    public ResponseEntity deleteAuthor(@PathVariable("ID of the author") int id) {
         if (libraryService.getAuthorByID(id) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         libraryService.deleteAuthor(id);
         return new ResponseEntity(HttpStatus.ACCEPTED);
