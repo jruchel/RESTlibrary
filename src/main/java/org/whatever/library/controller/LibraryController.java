@@ -13,7 +13,9 @@ import org.whatever.library.security.SecurityService;
 import org.whatever.library.services.UserService;
 import org.whatever.library.utils.CollectionUtils;
 import org.whatever.library.validation.UserValidator;
+
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 
@@ -43,16 +45,18 @@ public class LibraryController {
 
     @CrossOrigin
     @GetMapping(value = "/authors/{id}")
-    public Author getAuthorByID(@PathVariable("ID of the author") int id) {
+    public Author getAuthorByID(@PathVariable() int id) {
         return libraryService.getAuthorByID(id);
     }
-
 
 
     @CrossOrigin
     @PostMapping(value = "/authors")
     public ResponseEntity addAuthor(@RequestBody @Valid Author author) {
         if (libraryService.exists(author)) return new ResponseEntity(HttpStatus.CONFLICT);
+        for (Book b : author.getBibliography()) {
+            if (b.getInStock() <= 0) b.setInStock(1);
+        }
         libraryService.save(author);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
@@ -60,7 +64,7 @@ public class LibraryController {
 
     @CrossOrigin
     @PutMapping(value = "/authors/{id}")
-    public ResponseEntity updateAuthor(@RequestBody @Valid Author author, @PathVariable("ID of the author") int id) {
+    public ResponseEntity updateAuthor(@RequestBody @Valid Author author, @PathVariable() int id) {
         Author oldAuthor = getAuthorByID(id);
 
         oldAuthor.setFirstName(author.getFirstName());
@@ -78,13 +82,13 @@ public class LibraryController {
 
     @CrossOrigin
     @GetMapping("/authors/{id}/books")
-    public Iterable<Book> getAllBooks(@PathVariable("ID of the author") int id) {
+    public Iterable<Book> getAllBooks(@PathVariable() int id) {
         return getAuthorByID(id).getBibliography();
     }
 
     @CrossOrigin
     @GetMapping("/authors/{id}/{bid}")
-    public Book getBookByID(@PathVariable("ID of the author") int id, @PathVariable("ID of the book") int bid) {
+    public Book getBookByID(@PathVariable() int id, @PathVariable() int bid) {
         return getAuthorByID(id).getBook(bid);
     }
 
@@ -107,9 +111,20 @@ public class LibraryController {
 
     @CrossOrigin
     @PostMapping(value = "/authors/{id}/book")
-    public ResponseEntity addBook(@PathVariable("ID of the author") int id, @RequestBody Book book) {
+    public ResponseEntity addBook(@PathVariable() int id, @RequestParam(required = false, name = "amount") int amount, @RequestBody Book requestBook) {
         Author author = getAuthorByID(id);
-        author.addBook(book);
+
+        //Sprawdzanie czy nie ma jej w bazie
+        if (amount <= 0) amount = 1;
+        Book fromDB = libraryService.getBookByTitle(id, requestBook.getTitle());
+
+        if (fromDB == null) {
+            requestBook.setInStock(amount);
+            author.addBook(requestBook);
+        } else {
+            fromDB.setInStock(fromDB.getInStock() + amount);
+        }
+
         libraryService.save(author);
 
         return new ResponseEntity(HttpStatus.ACCEPTED);
@@ -117,7 +132,7 @@ public class LibraryController {
 
     @CrossOrigin
     @DeleteMapping(value = "/authors/{id}/{bid}")
-    public ResponseEntity deleteBook(@PathVariable("ID of the author") int id, @PathVariable int bid) {
+    public ResponseEntity deleteBook(@PathVariable() int id, @PathVariable int bid) {
         if (libraryService.getBookByID(id, bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         Author author = getAuthorByID(id);
         author.removeBook(bid);
@@ -128,7 +143,7 @@ public class LibraryController {
 
     @CrossOrigin
     @DeleteMapping(value = "/authors/{id}")
-    public ResponseEntity deleteAuthor(@PathVariable("ID of the author") int id) {
+    public ResponseEntity deleteAuthor(@PathVariable() int id) {
         if (libraryService.getAuthorByID(id) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         libraryService.deleteAuthor(id);
         return new ResponseEntity(HttpStatus.ACCEPTED);
@@ -138,6 +153,14 @@ public class LibraryController {
     @GetMapping("/users")
     public User findByUsername(@RequestBody String username) {
         return userService.findByUsername(username);
+    }
+
+
+    @CrossOrigin
+    @PostMapping("/temp/login")
+    public void login(@RequestBody User user) {
+        if (user.getPassword().equals(user.getPasswordConfirm()))
+            securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
     }
 
     @CrossOrigin
