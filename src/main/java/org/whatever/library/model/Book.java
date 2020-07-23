@@ -31,6 +31,10 @@ public class Book {
     private List<User> reservingUsers;
 
     @JsonIgnore
+    @ManyToMany(mappedBy = "rentedBooks", cascade = {CascadeType.PERSIST})
+    private List<User> rentingUsers;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
@@ -38,6 +42,14 @@ public class Book {
     public Book() {
         this.inStock = 1;
         this.reservingUsers = new ArrayList<>();
+    }
+
+    public List<User> getRentingUsers() {
+        return rentingUsers;
+    }
+
+    public void setRentingUsers(List<User> rentingUsers) {
+        this.rentingUsers = rentingUsers;
     }
 
     public int getReserved() {
@@ -56,6 +68,11 @@ public class Book {
         this.rented = rented;
     }
 
+    public void cancelReservation(User user) {
+        reservingUsers.remove(user);
+        reserved--;
+        inStock++;
+    }
 
     public List<User> getReservingUsers() {
         return reservingUsers;

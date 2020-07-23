@@ -21,11 +21,17 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "users_books",
+            name = "users_books_reserving",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
     private List<Book> reservedBooks;
 
+    @ManyToMany
+    @JoinTable(
+            name = "users_books_renting",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
+    private List<Book> rentedBooks;
 
     @ManyToMany
     private Set<Role> roles;
@@ -40,6 +46,18 @@ public class User {
 
     public void setReservedBooks(List<Book> reservedBooks) {
         this.reservedBooks = reservedBooks;
+    }
+
+    public List<Book> getRentedBooks() {
+        return rentedBooks;
+    }
+
+    public void setRentedBooks(List<Book> rentedBooks) {
+        this.rentedBooks = rentedBooks;
+    }
+
+    public void cancelReservation(int bid) {
+        reservedBooks.stream().filter(b -> b.getId() == bid).findFirst().ifPresent(b -> reservedBooks.remove(b));
     }
 
     public void reserveBook(Book book) {

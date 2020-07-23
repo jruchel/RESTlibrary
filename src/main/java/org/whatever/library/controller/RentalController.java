@@ -6,8 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.whatever.library.services.RentalService;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/rental")
 public class RentalController {
@@ -17,8 +15,14 @@ public class RentalController {
 
     @CrossOrigin
     @PostMapping("/reserve")
-    public void reserveBook(@RequestBody Map<String, Integer> ids) {
-        rentalService.reserveBook(getPrincipalUsername(), ids.get("aid"), ids.get("bid"));
+    public void reserveBook(@RequestBody int bid) {
+        rentalService.reserveBook(getPrincipalUsername(), bid);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/reserve")
+    public void cancelReservation(@RequestBody int bid) {
+        rentalService.cancelReservation(getPrincipalUsername(), bid);
     }
 
 

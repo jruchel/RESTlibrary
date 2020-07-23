@@ -23,27 +23,33 @@ public class RentalService {
     @Autowired
     private UserRepository userRepository;
 
-    public void reserveBook(String username, int aid, int bid) {
-        if (canReserve(aid, bid, 1)) {
+    public void reserveBook(String username, int bid) {
+        if (canReserve(bid, 1)) {
             User user = userRepository.findByUsername(username);
-            Book book = getBook(aid, bid);
+            Book book = getBook(bid);
             user.reserveBook(book);
             userRepository.save(user);
-            bookRepository.save(book);
         }
     }
 
-    private Book getBook(int aid, int bid) {
-        try {
-            Author author = autorRepository.findById(aid).get();
-            return author.getBook(bid);
-        } catch (NoSuchElementException ex) {
-            return null;
-        }
+    public void cancelReservation(String username, int bid) {
+        User user = userRepository.findByUsername(username);
+        Book book = getBook(bid);
+        book.cancelReservation(user);
+        user.cancelReservation(bid);
+        userRepository.save(user);
+        bookRepository.save(book);
     }
 
-    private boolean canReserve(int aid, int bid, int amount) {
-        Book book = getBook(aid, bid);
+    private Book getBook(int bid) {
+        if (bookRepository.findById(bid).isPresent())
+            return bookRepository.findById(bid).get();
+
+        return null;
+    }
+
+    private boolean canReserve(int bid, int amount) {
+        Book book = getBook(bid);
         if (book == null) return false;
         return book.getInStock() >= amount;
     }
