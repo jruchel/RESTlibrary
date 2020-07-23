@@ -30,16 +30,6 @@ public class LibraryService {
         else throw new NullPointerException();
     }
 
-    public Book getBookByTitle(int id, String title) {
-        List<Book> allBooks = (List<Book>) getAllBooks(id);
-
-        try {
-            return allBooks.stream().filter(b -> b.getTitle().equals(title)).findFirst().get();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
     public void save(Author author) {
         authorRepository.save(author);
     }
