@@ -2,7 +2,7 @@ package org.whatever.library.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.whatever.library.security.Role;
+import org.whatever.library.model.Role;
 import java.util.Set;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {

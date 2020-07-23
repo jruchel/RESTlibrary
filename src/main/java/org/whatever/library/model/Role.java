@@ -1,4 +1,4 @@
-package org.whatever.library.security;
+package org.whatever.library.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

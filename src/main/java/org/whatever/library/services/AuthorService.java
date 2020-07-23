@@ -12,11 +12,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class LibraryService {
+public class AuthorService {
 
     @Autowired
     private AuthorRepository authorRepository;
-
     @Autowired
     private BookRepository bookRepository;
 
@@ -30,26 +29,16 @@ public class LibraryService {
         else throw new NullPointerException();
     }
 
-    public Book getBookByTitle(int id, String title) {
-        List<Book> allBooks = (List<Book>) getAllBooks(id);
-
-        try {
-            return allBooks.stream().filter(b -> b.getTitle().equals(title)).findFirst().get();
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
     public void save(Author author) {
         authorRepository.save(author);
     }
 
-    public void addBooks(Author author, Iterable<Book> books) {
+    public void addBooksToAuthor(Author author, Iterable<Book> books) {
         author.addBooks(books);
         authorRepository.save(author);
     }
 
-    public void addBook(Author author, Book book) {
+    public void addBookToAuthor(Author author, Book book) {
         author.addBook(book);
         authorRepository.save(author);
     }
@@ -58,12 +47,12 @@ public class LibraryService {
         return authorRepository.findAuthorsByName(firstName);
     }
 
-    public List<Author> getAuthorsByLastName(String lastName) {
-        return authorRepository.findAuthorsByLastName(lastName);
-    }
-
     public List<Author> getAuthorsByName(String firstName, String lastName) {
         return authorRepository.findAuthorsByName(firstName).stream().filter(a -> a.getLastName().equals(lastName)).collect(Collectors.toList());
+    }
+
+    public List<Author> getAuthorsByLastName(String lastName) {
+        return authorRepository.findAuthorsByLastName(lastName);
     }
 
     public List<Author> getAuthorsWithBookTitled(String title) {
@@ -83,24 +72,13 @@ public class LibraryService {
         authorRepository.deleteById(id);
     }
 
-    public void deleteBookByID(int bid) {
-        bookRepository.deleteById(bid);
-    }
-
+        // ==== private methods ====
     private boolean containsID(int id) {
         return getAuthorByID(id) != null;
     }
 
-    private boolean containsBook(int id, int bid) {
-        return getBookByID(id, bid) != null;
-    }
 
-    public Iterable<Book> getAllBooks(int aid) {
-        return getAuthorByID(aid).getBibliography();
-    }
 
-    public Book getBookByID(int aid, int bid) throws NullPointerException {
-        return getAuthorByID(aid).getBook(bid);
-    }
+
 
 }
