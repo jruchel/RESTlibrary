@@ -21,6 +21,14 @@ public class UserController {
     }
 
     @CrossOrigin
+    @PostMapping("/temp/login")
+    public void login(@RequestBody User user) {
+        if (user.getPassword().equals(user.getPasswordConfirm())) {
+            securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
+        }
+    }
+
+    @CrossOrigin
     @GetMapping("/users")
     public User findByUsername(@RequestBody String username) {
         return userService.findByUsername(username);

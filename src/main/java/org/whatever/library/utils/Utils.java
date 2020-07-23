@@ -13,7 +13,7 @@ public class Utils {
 
         for (Book b : books) {
             if (mapOfBooks.containsKey(b)) {
-                mapOfBooks.replace(b, mapOfBooks.get(b) + 1);
+                mapOfBooks.replace(b, mapOfBooks.get(b) + b.getInStock());
             } else {
                 mapOfBooks.put(b, b.getInStock());
             }
