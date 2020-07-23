@@ -31,10 +31,10 @@ public class BookController {
     }
 
     @CrossOrigin
-    @GetMapping("/{id}/{bid}")
+    @GetMapping("/{bid}")
     public @ResponseBody
-    Book getBookByID(@PathVariable int id, @PathVariable int bid) {
-        return getAuthorByID(id).getBook(bid);
+    Book getBookByID(@PathVariable int bid) {
+        return bookService.findByID(bid);
     }
 
     @CrossOrigin
@@ -56,8 +56,7 @@ public class BookController {
                 author.addBooks(a.getBibliography());
                 author.setBibliography(Utils.compress(author.getBibliography()));
                 authorService.save(author);
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 a.setBibliography(Utils.compress(a.getBibliography()));
                 authorService.save(a);
             }
@@ -65,18 +64,20 @@ public class BookController {
     }
 
     @CrossOrigin
-    @DeleteMapping(value = "/{id}/{bid}")
-    public ResponseEntity deleteBook(@PathVariable int id, @PathVariable int bid) {
+    @DeleteMapping(value = "/{bid}")
+    public ResponseEntity deleteBook(@PathVariable int bid) {
         if (bookService.findByID(bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
-        Author author = getAuthorByID(id);
+        Book book = bookService.findByID(bid);
+        if (book.getRentingCount() + book.getReservedCount() > 0)
+            return new ResponseEntity(HttpStatus.PRECONDITION_FAILED);
+        Author author = book.getAuthor();
         author.removeBook(bid);
-        bookService.deleteBookByID(bid);
         authorService.save(author);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
     // ==== private methods ====
-   private Author getAuthorByID(int id) {
+    private Author getAuthorByID(int id) {
         return authorService.getAuthorByID(id);
     }
 

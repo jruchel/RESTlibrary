@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.whatever.library.model.Book;
 import org.whatever.library.repository.BookRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +24,22 @@ public class BookService {
         } catch (Exception ex) {
             return null;
         }
+    }
+
+    public List<Book> getRentedBooks() {
+        return bookRepository.getRentedBooks();
+    }
+
+    public List<Book> getReservedBooks() {
+        return bookRepository.getReservedBooks();
+    }
+
+    public List<Book> getRentedOrReservedBooks() {
+        List<Book> books = new ArrayList<>();
+        books.addAll(getRentedBooks());
+        books.addAll(getReservedBooks());
+
+        return books;
     }
 
     public Iterable<Book> getAllBooks(int aid) {
