@@ -1,5 +1,4 @@
 package org.whatever.library.model;
-
 import org.whatever.library.validation.NameConstraint;
 
 import javax.persistence.*;
