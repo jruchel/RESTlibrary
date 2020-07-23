@@ -9,6 +9,7 @@ import org.whatever.library.repository.AuthorRepository;
 import org.whatever.library.repository.BookRepository;
 import org.whatever.library.repository.UserRepository;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -16,6 +17,9 @@ public class RentalService {
 
     @Autowired
     private AuthorRepository autorRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private BookRepository bookRepository;
@@ -39,6 +43,14 @@ public class RentalService {
         user.cancelReservation(bid);
         userRepository.save(user);
         bookRepository.save(book);
+    }
+
+    public List<User> getRentingUsers() {
+        return userService.getRentingUsers();
+    }
+
+    public List<User> getReservingUsers() {
+        return userService.getReservingUsers();
     }
 
     private Book getBook(int bid) {
