@@ -6,6 +6,7 @@ import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 import org.whatever.library.model.User;
 import org.whatever.library.repository.AuthorRepository;
+import org.whatever.library.repository.BookRepository;
 import org.whatever.library.repository.UserRepository;
 
 import java.util.NoSuchElementException;
@@ -17,13 +18,18 @@ public class RentalService {
     private AuthorRepository autorRepository;
 
     @Autowired
+    private BookRepository bookRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     public void reserveBook(String username, int aid, int bid) {
         if (canReserve(aid, bid, 1)) {
             User user = userRepository.findByUsername(username);
-            user.reserveBook(getBook(aid, bid));
+            Book book = getBook(aid, bid);
+            user.reserveBook(book);
             userRepository.save(user);
+            bookRepository.save(book);
         }
     }
 

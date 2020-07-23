@@ -27,7 +27,7 @@ public class Book {
     private int rented;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "reservedBooks", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "reservedBooks", cascade = {CascadeType.PERSIST})
     private List<User> reservingUsers;
 
     @JsonIgnore
