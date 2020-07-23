@@ -1,9 +1,10 @@
 package org.whatever.library.model;
 
-import org.whatever.library.model.Role;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -11,7 +12,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String username;
     private String password;
@@ -19,11 +20,44 @@ public class User {
     private String passwordConfirm;
 
     @ManyToMany
+    private List<Book> reservedBooks;
+
+    @ManyToMany
+    private List<Book> rentedBooks;
+
+    @ManyToMany
     private Set<Role> roles;
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public List<Book> getReservedBooks() {
+        return reservedBooks;
+    }
+
+    public void setReservedBooks(List<Book> reservedBooks) {
+        this.reservedBooks = reservedBooks;
+    }
+
+    public List<Book> getRentedBooks() {
+        return rentedBooks;
+    }
+
+    public void reserveBook(Book book) {
+        book.reserve(this);
+        book = (Book) book.clone();
+        this.reservedBooks.add(book);
+    }
+
+    public void setRentedBooks(List<Book> rentedBooks) {
+        this.rentedBooks = rentedBooks;
+    }
 
     public User() {
-        roles = new HashSet<>();
+        this.roles = new HashSet<>();
+        this.reservedBooks = new ArrayList<>();
+        this.rentedBooks = new ArrayList<>();
     }
 
     public Long getId() {

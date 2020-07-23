@@ -3,6 +3,8 @@ package org.whatever.library.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -24,13 +26,54 @@ public class Book {
     @Column
     private int rented;
 
+
+    @ManyToMany
+    private List<User> rentingUsers;
+
+    @ManyToMany
+    private List<User> reservingUsers;
+
     @JsonIgnore
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "author_id")
     private Author author;
 
     public Book() {
-        inStock = 1;
+        this.inStock = 1;
+        this.rentingUsers = new ArrayList<>();
+        this.reservingUsers = new ArrayList<>();
+    }
+
+    public int getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(int reserved) {
+        this.reserved = reserved;
+    }
+
+    public int getRented() {
+        return rented;
+    }
+
+    public void setRented(int rented) {
+        this.rented = rented;
+    }
+
+    public List<User> getRentingUsers() {
+        return rentingUsers;
+    }
+
+    public void setRentingUsers(List<User> rentingUsers) {
+        this.rentingUsers = rentingUsers;
+    }
+
+    public List<User> getReservingUsers() {
+        return reservingUsers;
+    }
+
+    public void setReservingUsers(List<User> reservingUsers) {
+        this.reservingUsers = reservingUsers;
     }
 
     @Override
@@ -42,6 +85,24 @@ public class Book {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    protected Object clone() {
+        Book book = new Book();
+        book.setAuthor(this.getAuthor());
+        book.setTitle(this.getTitle());
+        return book;
+    }
+
+    public boolean reserve(User user) {
+        //Jesli uzytkownik juz wypozycza ksiazke, przerwanie
+        if (reservingUsers.contains(user) || rentingUsers.contains(user)) return false;
+        if (inStock < 1) return false;
+        inStock--;
+        reserved++;
+        reservingUsers.add(user);
+        return true;
     }
 
     public void setId(int id) {
