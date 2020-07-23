@@ -5,8 +5,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.whatever.library.repository.RoleRepository;
 import org.whatever.library.repository.UserRepository;
-import org.whatever.library.security.Role;
-import org.whatever.library.security.User;
+import org.whatever.library.model.Role;
+import org.whatever.library.model.User;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;

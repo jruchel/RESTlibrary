@@ -1,4 +1,6 @@
-package org.whatever.library.security;
+package org.whatever.library.model;
+
+import org.whatever.library.model.Role;
 
 import javax.persistence.*;
 import java.util.HashSet;
