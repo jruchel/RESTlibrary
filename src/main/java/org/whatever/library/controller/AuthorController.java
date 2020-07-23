@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
-import org.whatever.library.services.LibraryService;
+import org.whatever.library.services.AuthorService;
+import org.whatever.library.services.BookService;
 import org.whatever.library.utils.CollectionUtils;
-import org.whatever.library.utils.Utils;
 
 
 import javax.validation.Valid;
@@ -17,36 +17,38 @@ import java.util.List;
 @RestController
 public class AuthorController {
 
-    private LibraryService libraryService;
+    private AuthorService authorService;
+    private BookService bookService;
     private CollectionUtils<Author> authorCollectionUtils;
 
-    public AuthorController(LibraryService libraryService, CollectionUtils<Author> authorCollectionUtils) {
-        this.libraryService = libraryService;
+    public AuthorController(AuthorService authorService, CollectionUtils<Author> authorCollectionUtils, BookService bookService) {
+        this.authorService = authorService;
         this.authorCollectionUtils = authorCollectionUtils;
+        this.bookService = bookService;
     }
 
     @CrossOrigin
     @GetMapping("/authors")
     public Iterable<Author> getAllAuthors() {
-        return libraryService.getAllAuthors();
+        return authorService.getAllAuthors();
     }
 
 
     @CrossOrigin
     @GetMapping(value = "/authors/{id}")
     public Author getAuthorByID(@PathVariable() int id) {
-        return libraryService.getAuthorByID(id);
+        return authorService.getAuthorByID(id);
     }
 
 
     @CrossOrigin
     @PostMapping(value = "/authors")
     public ResponseEntity addAuthor(@RequestBody @Valid Author author) {
-        if (libraryService.exists(author)) return new ResponseEntity(HttpStatus.CONFLICT);
+        if (authorService.exists(author)) return new ResponseEntity(HttpStatus.CONFLICT);
         for (Book b : author.getBibliography()) {
             if (b.getInStock() <= 0) b.setInStock(1);
         }
-        libraryService.save(author);
+        authorService.save(author);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
@@ -63,7 +65,7 @@ public class AuthorController {
             if (oldAuthor.getBibliography() == null || oldAuthor.getBibliography().size() == 0) break;
         }
         oldAuthor.setBibliography(author.getBibliography());
-        libraryService.save(oldAuthor);
+        authorService.save(oldAuthor);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
@@ -77,9 +79,9 @@ public class AuthorController {
         List<Author> byName = null;
         List<Author> byTitle = null;
         List<Author> byLastName = null;
-        if (!(name == null || name.isEmpty())) byName = libraryService.getAuthorsByName(name);
-        if (!(lastName == null || lastName.isEmpty())) byLastName = libraryService.getAuthorsByLastName(lastName);
-        if (!(title == null || title.isEmpty())) byTitle = libraryService.getAuthorsWithBookTitled(title);
+        if (!(name == null || name.isEmpty())) byName = authorService.getAuthorsByName(name);
+        if (!(lastName == null || lastName.isEmpty())) byLastName = authorService.getAuthorsByLastName(lastName);
+        if (!(title == null || title.isEmpty())) byTitle = authorService.getAuthorsWithBookTitled(title);
 
 
         return authorCollectionUtils.getCommonObjects(byName, byLastName, byTitle);
@@ -88,18 +90,18 @@ public class AuthorController {
     @CrossOrigin
     @DeleteMapping(value = "/authors/{id}")
     public ResponseEntity deleteAuthor(@PathVariable() int id) {
-        if (libraryService.getAuthorByID(id) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
-        libraryService.deleteAuthor(id);
+        if (authorService.getAuthorByID(id) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
+        authorService.deleteAuthor(id);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
     // ===== private methods =================
     private ResponseEntity deleteBook(@PathVariable int id, @PathVariable int bid) {
-        if (libraryService.getBookByID(id, bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if (bookService.getBookByID(id, bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         Author author = getAuthorByID(id);
         author.removeBook(bid);
-        libraryService.deleteBookByID(bid);
-        libraryService.save(author);
+        bookService.deleteBookByID(bid);
+        authorService.save(author);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 

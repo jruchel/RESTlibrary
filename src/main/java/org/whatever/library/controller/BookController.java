@@ -5,7 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
-import org.whatever.library.services.LibraryService;
+import org.whatever.library.services.AuthorService;
+import org.whatever.library.services.BookService;
 import org.whatever.library.utils.Utils;
 
 import java.util.List;
@@ -13,10 +14,12 @@ import java.util.List;
 @RestController
 public class BookController {
 
-    private LibraryService libraryService;
+    private AuthorService authorService;
+    private BookService bookService;
 
-    public BookController(LibraryService libraryService) {
-        this.libraryService = libraryService;
+    public BookController(AuthorService authorService, BookService bookService) {
+        this.authorService = authorService;
+        this.bookService = bookService;
     }
 
     @CrossOrigin
@@ -38,7 +41,7 @@ public class BookController {
     public ResponseEntity addBook(@PathVariable int id, @RequestBody Book book) {
         Author author = getAuthorByID(id);
         author.addBook(book);
-        libraryService.save(author);
+        authorService.save(author);
 
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
@@ -48,14 +51,14 @@ public class BookController {
     public void addBooks(@RequestBody List<Author> byAuthors) {
         for (Author a : byAuthors) {
             try {
-                Author author = libraryService.getAuthorsByName(a.getFirstName(), a.getLastName()).get(0);
+                Author author = authorService.getAuthorsByName(a.getFirstName(), a.getLastName()).get(0);
                 author.addBooks(a.getBibliography());
                 author.setBibliography(Utils.compress(author.getBibliography()));
-                libraryService.save(author);
+                authorService.save(author);
             }
             catch (Exception ex) {
                 a.setBibliography(Utils.compress(a.getBibliography()));
-                libraryService.save(a);
+                authorService.save(a);
             }
         }
     }
@@ -63,17 +66,17 @@ public class BookController {
     @CrossOrigin
     @DeleteMapping(value = "/authors/{id}/{bid}")
     public ResponseEntity deleteBook(@PathVariable int id, @PathVariable int bid) {
-        if (libraryService.getBookByID(id, bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if (bookService.getBookByID(id, bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         Author author = getAuthorByID(id);
         author.removeBook(bid);
-        libraryService.deleteBookByID(bid);
-        libraryService.save(author);
+        bookService.deleteBookByID(bid);
+        authorService.save(author);
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
     // ==== private methods ====
    private Author getAuthorByID(int id) {
-        return libraryService.getAuthorByID(id);
+        return authorService.getAuthorByID(id);
     }
 
 }
