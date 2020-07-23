@@ -101,6 +101,7 @@ public class Author {
 
     public void setBibliography(List<Book> bibliography) {
         this.bibliography = bibliography;
+        if(bibliography.size() > 0)
         assignBooks();
     }
 

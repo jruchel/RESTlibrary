@@ -26,11 +26,8 @@ public class Book {
     @Column
     private int rented;
 
-
-    @ManyToMany
-    private List<User> rentingUsers;
-
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(mappedBy = "reservedBooks", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> reservingUsers;
 
     @JsonIgnore
@@ -40,7 +37,6 @@ public class Book {
 
     public Book() {
         this.inStock = 1;
-        this.rentingUsers = new ArrayList<>();
         this.reservingUsers = new ArrayList<>();
     }
 
@@ -60,13 +56,6 @@ public class Book {
         this.rented = rented;
     }
 
-    public List<User> getRentingUsers() {
-        return rentingUsers;
-    }
-
-    public void setRentingUsers(List<User> rentingUsers) {
-        this.rentingUsers = rentingUsers;
-    }
 
     public List<User> getReservingUsers() {
         return reservingUsers;
@@ -97,7 +86,7 @@ public class Book {
 
     public boolean reserve(User user) {
         //Jesli uzytkownik juz wypozycza ksiazke, przerwanie
-        if (reservingUsers.contains(user) || rentingUsers.contains(user)) return false;
+        if (reservingUsers.contains(user) /*|| rentingUsers.contains(user)*/) return false;
         if (inStock < 1) return false;
         inStock--;
         reserved++;

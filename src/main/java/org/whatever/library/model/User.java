@@ -20,10 +20,12 @@ public class User {
     private String passwordConfirm;
 
     @ManyToMany
+    @JoinTable(
+            name = "users_books",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"))
     private List<Book> reservedBooks;
 
-    @ManyToMany
-    private List<Book> rentedBooks;
 
     @ManyToMany
     private Set<Role> roles;
@@ -40,24 +42,16 @@ public class User {
         this.reservedBooks = reservedBooks;
     }
 
-    public List<Book> getRentedBooks() {
-        return rentedBooks;
-    }
-
     public void reserveBook(Book book) {
         book.reserve(this);
         book = (Book) book.clone();
         this.reservedBooks.add(book);
     }
 
-    public void setRentedBooks(List<Book> rentedBooks) {
-        this.rentedBooks = rentedBooks;
-    }
 
     public User() {
         this.roles = new HashSet<>();
         this.reservedBooks = new ArrayList<>();
-        this.rentedBooks = new ArrayList<>();
     }
 
     public Long getId() {
