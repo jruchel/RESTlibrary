@@ -15,6 +15,7 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("/authors")
 public class AuthorController {
 
     private AuthorService authorService;
@@ -28,21 +29,21 @@ public class AuthorController {
     }
 
     @CrossOrigin
-    @GetMapping("/authors")
+    @GetMapping("/")
     public Iterable<Author> getAllAuthors() {
         return authorService.getAllAuthors();
     }
 
 
     @CrossOrigin
-    @GetMapping(value = "/authors/{id}")
+    @GetMapping(value = "/{id}")
     public Author getAuthorByID(@PathVariable() int id) {
         return authorService.getAuthorByID(id);
     }
 
 
     @CrossOrigin
-    @PostMapping(value = "/authors")
+    @PostMapping(value = "/")
     public ResponseEntity addAuthor(@RequestBody @Valid Author author) {
         if (authorService.exists(author)) return new ResponseEntity(HttpStatus.CONFLICT);
         for (Book b : author.getBibliography()) {
@@ -54,7 +55,7 @@ public class AuthorController {
 
 
     @CrossOrigin
-    @PutMapping(value = "/authors/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity updateAuthor(@RequestBody @Valid Author author, @PathVariable int id) {
         Author oldAuthor = getAuthorByID(id);
 
@@ -71,7 +72,7 @@ public class AuthorController {
 
 
     @CrossOrigin
-    @GetMapping("/authors/search")
+    @GetMapping("/search")
     public List<Author> searchAuthors(
             @RequestParam(required = false, name = "name") String name,
             @RequestParam(required = false, name = "lastName") String lastName,
@@ -88,7 +89,7 @@ public class AuthorController {
     }
 
     @CrossOrigin
-    @DeleteMapping(value = "/authors/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity deleteAuthor(@PathVariable() int id) {
         if (authorService.getAuthorByID(id) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         authorService.deleteAuthor(id);

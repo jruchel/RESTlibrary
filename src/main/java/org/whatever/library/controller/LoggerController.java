@@ -3,6 +3,7 @@ package org.whatever.library.controller;
 import javafx.util.Pair;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.whatever.library.logger.LoggerManager;
 
@@ -10,11 +11,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
+@RequestMapping("/logger")
 public class LoggerController {
 
     private LoggerManager loggerManager = new LoggerManager();
 
-    @PostMapping("/logger")
+    @PostMapping("/")
     public void logKeys(@RequestBody String message) {
         Pair<String, String> information = extractInformation(message);
 

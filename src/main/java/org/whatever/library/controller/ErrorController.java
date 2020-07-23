@@ -9,12 +9,13 @@ import org.whatever.library.validation.ValidationErrorPasser;
 import java.util.List;
 
 @Controller
+@RequestMapping("/error")
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 
     @Autowired
     private ValidationErrorPasser errorPasser;
 
-    @RequestMapping("/error")
+    @RequestMapping("/")
     public @ResponseBody
     List<String>
     handleError() {

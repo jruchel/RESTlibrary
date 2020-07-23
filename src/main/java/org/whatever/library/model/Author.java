@@ -1,9 +1,11 @@
 package org.whatever.library.model;
+
 import org.whatever.library.validation.NameConstraint;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,7 +52,7 @@ public class Author {
         List<Book> booksWithID = bibliography.stream().filter(b -> b.getId() == id).collect(Collectors.toList());
         if (booksWithID.size() > 0)
             return booksWithID.get(0);
-        else return null;
+        else throw new NoSuchElementException(String.format("Book with id %d does not exist", id));
     }
 
     public void addBook(Book book) {
