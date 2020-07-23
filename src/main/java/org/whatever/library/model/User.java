@@ -44,7 +44,7 @@ public class User {
 
     public void reserveBook(Book book) {
         book.reserve(this);
-        book = (Book) book.clone();
+       // book = (Book) book.clone();
         this.reservedBooks.add(book);
     }
 
