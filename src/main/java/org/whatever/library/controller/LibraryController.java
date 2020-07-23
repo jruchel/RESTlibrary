@@ -12,10 +12,10 @@ import org.whatever.library.services.LibraryService;
 import org.whatever.library.security.SecurityService;
 import org.whatever.library.services.UserService;
 import org.whatever.library.utils.CollectionUtils;
+import org.whatever.library.utils.Utils;
 import org.whatever.library.validation.UserValidator;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 
@@ -64,7 +64,7 @@ public class LibraryController {
 
     @CrossOrigin
     @PutMapping(value = "/authors/{id}")
-    public ResponseEntity updateAuthor(@RequestBody @Valid Author author, @PathVariable() int id) {
+    public ResponseEntity updateAuthor(@RequestBody @Valid Author author, @PathVariable int id) {
         Author oldAuthor = getAuthorByID(id);
 
         oldAuthor.setFirstName(author.getFirstName());
@@ -114,7 +114,6 @@ public class LibraryController {
     public ResponseEntity addBook(@PathVariable() int id, @RequestParam(required = false, name = "amount") int amount, @RequestBody Book requestBook) {
         Author author = getAuthorByID(id);
 
-        //Sprawdzanie czy nie ma jej w bazie
         if (amount <= 0) amount = 1;
         Book fromDB = libraryService.getBookByTitle(id, requestBook.getTitle());
 
@@ -128,6 +127,23 @@ public class LibraryController {
         libraryService.save(author);
 
         return new ResponseEntity(HttpStatus.ACCEPTED);
+    }
+
+    @CrossOrigin
+    @PostMapping("/authors/bookDelivery")
+    public void addBooks(@RequestBody List<Author> byAuthors) {
+
+        for (Author a : byAuthors) {
+            Author author = libraryService.getAuthorsByName(a.getFirstName(), a.getLastName()).get(0);
+            if (author == null) {
+                a.setBibliography(Utils.compress(a.getBibliography()));
+                libraryService.save(a);
+            } else {
+                author.addBooks(a.getBibliography());
+                author.setBibliography(Utils.compress(author.getBibliography()));
+                updateAuthor(author, author.getId());
+            }
+        }
     }
 
     @CrossOrigin
