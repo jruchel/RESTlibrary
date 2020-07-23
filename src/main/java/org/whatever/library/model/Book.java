@@ -24,6 +24,7 @@ public class Book {
     @Column
     private int rented;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "author_id")
     private Author author;

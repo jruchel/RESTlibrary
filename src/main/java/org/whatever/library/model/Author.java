@@ -26,7 +26,6 @@ public class Author {
     @Column(name = "lastName")
     private String lastName;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "author", cascade = {CascadeType.ALL})
     private List<Book> bibliography;
 
