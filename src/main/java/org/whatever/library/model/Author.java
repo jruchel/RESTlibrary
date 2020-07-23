@@ -1,6 +1,4 @@
 package org.whatever.library.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.whatever.library.validation.NameConstraint;
 
 import javax.persistence.*;

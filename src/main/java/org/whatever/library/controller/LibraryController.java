@@ -134,14 +134,15 @@ public class LibraryController {
     public void addBooks(@RequestBody List<Author> byAuthors) {
 
         for (Author a : byAuthors) {
-            Author author = libraryService.getAuthorsByName(a.getFirstName(), a.getLastName()).get(0);
-            if (author == null) {
-                a.setBibliography(Utils.compress(a.getBibliography()));
-                libraryService.save(a);
-            } else {
+            try {
+                Author author = libraryService.getAuthorsByName(a.getFirstName(), a.getLastName()).get(0);
                 author.addBooks(a.getBibliography());
                 author.setBibliography(Utils.compress(author.getBibliography()));
-                updateAuthor(author, author.getId());
+                libraryService.save(author);
+            }
+            catch (Exception ex) {
+                a.setBibliography(Utils.compress(a.getBibliography()));
+                libraryService.save(a);
             }
         }
     }

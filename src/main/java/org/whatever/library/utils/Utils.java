@@ -9,13 +9,13 @@ public class Utils {
 
     public static List<Book> compress(List<Book> books) {
         if (getAuthorsSet(books).size() != 1) return null;
-        Map<Book, Integer> mapOfBooks = new HashMap<>();
+        Map<Book, Integer> mapOfBooks = new TreeMap<>(Comparator.comparing(o -> (o.getTitle() + o.getAuthor())));
 
         for (Book b : books) {
             if (mapOfBooks.containsKey(b)) {
                 mapOfBooks.replace(b, mapOfBooks.get(b) + 1);
             } else {
-                mapOfBooks.put(b, 1);
+                mapOfBooks.put(b, b.getInStock());
             }
         }
 

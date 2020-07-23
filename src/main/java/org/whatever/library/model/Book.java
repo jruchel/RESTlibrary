@@ -30,6 +30,7 @@ public class Book {
     private Author author;
 
     public Book() {
+        inStock = 1;
     }
 
     @Override
