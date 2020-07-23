@@ -98,7 +98,7 @@ public class AuthorController {
 
     // ===== private methods =================
     private ResponseEntity deleteBook(@PathVariable int id, @PathVariable int bid) {
-        if (bookService.getBookByID(id, bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
+        if (bookService.findByID(bid) == null) return new ResponseEntity(HttpStatus.NOT_FOUND);
         Author author = getAuthorByID(id);
         author.removeBook(bid);
         bookService.deleteBookByID(bid);

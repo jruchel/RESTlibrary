@@ -26,11 +26,14 @@ public class BookService {
     }
 
     public Iterable<Book> getAllBooks(int aid) {
-        return  authorService.getAuthorByID(aid).getBibliography();
+        return authorService.getAuthorByID(aid).getBibliography();
     }
 
-    public Book getBookByID(int aid, int bid) throws NullPointerException {
-        return authorService.getAuthorByID(aid).getBook(bid);
+    public Book findByID(int bid) throws NullPointerException {
+        if (bookRepository.findById(bid).isPresent()) {
+            return bookRepository.findById(bid).get();
+        }
+        return null;
     }
 
     public void deleteBookByID(int bid) {
@@ -39,6 +42,6 @@ public class BookService {
 
     // ==== private methods ====
     private boolean containsBook(int id, int bid) {
-        return getBookByID(id, bid) != null;
+        return findByID(bid) != null;
     }
 }

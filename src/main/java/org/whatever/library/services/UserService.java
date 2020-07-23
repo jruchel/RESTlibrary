@@ -25,7 +25,7 @@ public class UserService {
         List<Integer> rentingIds = userRepository.getRentingUsers();
         List<User> rentingUsers = new ArrayList<>();
         for (Integer id : rentingIds) {
-            userRepository.findById(Long.valueOf(id)).ifPresent(rentingUsers::add);
+            rentingUsers.add(findByID(id));
         }
         return rentingUsers;
     }
@@ -34,7 +34,7 @@ public class UserService {
         List<Integer> rentingIds = userRepository.getReservingUsers();
         List<User> reservingUsers = new ArrayList<>();
         for (Integer id : rentingIds) {
-            userRepository.findById(Long.valueOf(id)).ifPresent(reservingUsers::add);
+            reservingUsers.add(findByID(id));
         }
         return reservingUsers;
     }
@@ -44,6 +44,13 @@ public class UserService {
         user.setRoles(new HashSet<>());
         user.giveRole(roleRepository.getRoleByName("ROLE_USER"));
         userRepository.save(user);
+    }
+
+    public User findByID(int id) {
+        if (userRepository.findById((long) id).isPresent()) {
+            return userRepository.findById((long) id).get();
+        }
+        return null;
     }
 
     public User findByUsername(String username) {

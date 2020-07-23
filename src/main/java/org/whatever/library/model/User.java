@@ -65,7 +65,6 @@ public class User {
             this.reservedBooks.add(book);
     }
 
-
     public User() {
         this.roles = new HashSet<>();
         this.reservedBooks = new ArrayList<>();
