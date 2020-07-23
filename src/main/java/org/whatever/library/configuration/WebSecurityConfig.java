@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/authors", "authors/{id}/**", "authors/{id}").hasRole("MODERATOR")
                 .antMatchers("rental/**").hasRole("MODERATOR")
                 .antMatchers(HttpMethod.GET, "/authors/**", "/authors", "/rental/reserve").hasRole("USER")
-                .antMatchers("/registration", "/error", "/test/**", "/logger", "/temp/login").permitAll()
+                .antMatchers("/registration", "/error", "/test/**", "/logger/", "/temp/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
