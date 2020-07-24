@@ -70,12 +70,9 @@ public class Book {
         return id;
     }
 
-    @Override
-    protected Object clone() {
-        Book book = new Book();
-        book.setAuthor(this.getAuthor());
-        book.setTitle(this.getTitle());
-        return book;
+    public void returnBook(User user) {
+        rentingUsers.remove(user);
+        inStock++;
     }
 
     public boolean reserve(User user) {

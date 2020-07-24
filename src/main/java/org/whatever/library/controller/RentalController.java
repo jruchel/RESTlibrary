@@ -68,6 +68,12 @@ public class RentalController {
         admin.rentBook(user, book);
     }
 
+    @CrossOrigin
+    @PostMapping("/returnBook")
+    public void returnBook(@RequestBody int bid) {
+        rentalService.returnBook(getPrincipalUsername(), bid);
+    }
+
 
     // ===== private methods =================
     private String getPrincipalUsername() {

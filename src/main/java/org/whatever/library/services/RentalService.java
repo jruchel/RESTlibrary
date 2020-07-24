@@ -31,18 +31,35 @@ public class RentalService {
         if (canReserve(bid, 1)) {
             User user = userRepository.findByUsername(username);
             Book book = getBook(bid);
-            user.reserveBook(book);
+            if (book != null) {
+                user.reserveBook(book);
+                userRepository.save(user);
+            }
+
+        }
+    }
+
+    public void returnBook(String username, int bid) {
+        User user = userRepository.findByUsername(username);
+        Book book = getBook(bid);
+        if (book != null) {
+            book.returnBook(user);
+            user.returnBook(book);
             userRepository.save(user);
         }
+
     }
 
     public void cancelReservation(String username, int bid) {
         User user = userRepository.findByUsername(username);
         Book book = getBook(bid);
-        book.cancelReservation(user);
-        user.cancelReservation(bid);
-        userRepository.save(user);
-        bookRepository.save(book);
+        if (book != null) {
+            book.cancelReservation(user);
+            user.cancelReservation(bid);
+            userRepository.save(user);
+            bookRepository.save(book);
+        }
+
     }
 
     public List<User> getRentingUsers() {

@@ -60,6 +60,10 @@ public class User {
         reservedBooks.stream().filter(b -> b.getId() == bid).findFirst().ifPresent(b -> reservedBooks.remove(b));
     }
 
+    public void returnBook(Book book) {
+        rentedBooks.remove(book);
+    }
+
     public void reserveBook(Book book) {
         if (book.reserve(this))
             this.reservedBooks.add(book);
