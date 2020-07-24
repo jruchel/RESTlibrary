@@ -7,9 +7,7 @@ import org.whatever.library.model.User;
 import org.whatever.library.repository.RoleRepository;
 import org.whatever.library.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -22,7 +20,7 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<User> getRentingUsers() {
-        List<Integer> rentingIds = userRepository.getRentingUsers();
+        Set<Integer> rentingIds = userRepository.getRentingUsers();
         List<User> rentingUsers = new ArrayList<>();
         for (Integer id : rentingIds) {
             rentingUsers.add(findByID(id));
@@ -31,7 +29,7 @@ public class UserService {
     }
 
     public List<User> getReservingUsers() {
-        List<Integer> rentingIds = userRepository.getReservingUsers();
+        Set<Integer> rentingIds = userRepository.getReservingUsers();
         List<User> reservingUsers = new ArrayList<>();
         for (Integer id : rentingIds) {
             reservingUsers.add(findByID(id));

@@ -9,7 +9,7 @@ public class Utils {
 
     public static List<Book> compress(List<Book> books) {
         if (getAuthorsSet(books).size() != 1) return null;
-        Map<Book, Integer> mapOfBooks = new TreeMap<>(Comparator.comparing(o -> (o.getTitle() + o.getAuthor())));
+        Map<Book, Integer> mapOfBooks = new HashMap<>();
 
         for (Book b : books) {
             if (mapOfBooks.containsKey(b)) {

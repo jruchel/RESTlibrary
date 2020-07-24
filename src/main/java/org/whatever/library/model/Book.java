@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "books")
@@ -57,6 +58,11 @@ public class Book {
 
     public void setReservingUsers(List<User> reservingUsers) {
         this.reservingUsers = reservingUsers;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(author, title);
     }
 
     @Override

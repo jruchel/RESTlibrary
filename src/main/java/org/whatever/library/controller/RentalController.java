@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.whatever.library.model.Admin;
 import org.whatever.library.model.Book;
 import org.whatever.library.model.User;
-import org.whatever.library.repository.UserRepository;
 import org.whatever.library.services.BookService;
 import org.whatever.library.services.RentalService;
 import org.whatever.library.services.UserService;
@@ -69,7 +68,7 @@ public class RentalController {
     }
 
     @CrossOrigin
-    @PostMapping("/returnBook")
+    @PostMapping("/return")
     public void returnBook(@RequestBody int bid) {
         rentalService.returnBook(getPrincipalUsername(), bid);
     }
