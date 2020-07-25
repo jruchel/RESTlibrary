@@ -24,6 +24,18 @@ public class BookController {
     }
 
     @CrossOrigin
+    @GetMapping("/count")
+    public int getBookCount() {
+        return bookService.getBookCount();
+    }
+
+    @CrossOrigin
+    @GetMapping("/size")
+    public int getBooksAmount() {
+        return bookService.getLibrarySize();
+    }
+
+    @CrossOrigin
     @GetMapping("/{id}/books")
     public @ResponseBody
     Iterable<Book> getAllBooks(@PathVariable int id) {

@@ -38,6 +38,10 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
+    public int getAuthorCount() {
+        return authorRepository.getAuthorCount();
+    }
+
     public void addBookToAuthor(Author author, Book book) {
         author.addBook(book);
         authorRepository.save(author);
@@ -72,13 +76,10 @@ public class AuthorService {
         authorRepository.deleteById(id);
     }
 
-        // ==== private methods ====
+    // ==== private methods ====
     private boolean containsID(int id) {
         return getAuthorByID(id) != null;
     }
-
-
-
 
 
 }

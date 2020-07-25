@@ -42,6 +42,14 @@ public class BookService {
         return books;
     }
 
+    public int getLibrarySize() {
+        return bookRepository.getLibrarySize();
+    }
+
+    public int getBookCount() {
+        return bookRepository.getBookCount();
+    }
+
     public Iterable<Book> getAllBooks(int aid) {
         return authorService.getAuthorByID(aid).getBibliography();
     }

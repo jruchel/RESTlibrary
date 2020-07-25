@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BookRepository extends CrudRepository<Book, Integer>, JpaSpecificationExecutor<Book> {
 
-    @Query(value = "select author_id from books where title = ?1", nativeQuery = true)
+    @Query(value = "SELECT author_id from books where title = ?1", nativeQuery = true)
     List<Integer> getAuthorIDsWithTitle(String title);
 
     @Query(value = "SELECT book_id FROM users_books_reserving", nativeQuery = true)
@@ -17,5 +17,11 @@ public interface BookRepository extends CrudRepository<Book, Integer>, JpaSpecif
 
     @Query(value = "SELECT book_id FROM users_books_renting", nativeQuery = true)
     List<Book> getRentedBooks();
+
+    @Query(value = "SELECT count(*) from books", nativeQuery = true)
+    int getBookCount();
+
+    @Query(value = "SELECT sum(in_stock) FROM library.books", nativeQuery = true)
+    int getLibrarySize();
 
 }
