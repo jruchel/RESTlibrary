@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.whatever.library.model.Book;
 
 import java.util.List;
+import java.util.Set;
 
 public interface BookRepository extends CrudRepository<Book, Integer>, JpaSpecificationExecutor<Book> {
 
@@ -23,5 +24,8 @@ public interface BookRepository extends CrudRepository<Book, Integer>, JpaSpecif
 
     @Query(value = "SELECT sum(in_stock) FROM library.books", nativeQuery = true)
     int getLibrarySize();
+
+    @Query(value = "select * from books where title like ?1% limit ?2", nativeQuery = true)
+    Set<Book> getBooksByTitle(String title, int limit);
 
 }

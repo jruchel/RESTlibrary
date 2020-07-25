@@ -7,6 +7,7 @@ import org.whatever.library.repository.BookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BookService {
@@ -40,6 +41,10 @@ public class BookService {
         books.addAll(getReservedBooks());
 
         return books;
+    }
+
+    public Set<Book> getBookByTitle(String title, int limit) {
+        return bookRepository.getBooksByTitle(title, limit);
     }
 
     public int getLibrarySize() {

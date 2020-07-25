@@ -18,11 +18,11 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @NameConstraint
+    //@NameConstraint
     @Column(name = "firstName")
     private String firstName;
 
-    @NameConstraint
+    //@NameConstraint
     @Column(name = "lastName")
     private String lastName;
 

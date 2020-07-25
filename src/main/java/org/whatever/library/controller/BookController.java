@@ -9,7 +9,9 @@ import org.whatever.library.services.AuthorService;
 import org.whatever.library.services.BookService;
 import org.whatever.library.utils.Utils;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/books")
@@ -73,6 +75,12 @@ public class BookController {
                 authorService.save(a);
             }
         }
+    }
+
+    @CrossOrigin
+    @GetMapping("/search")
+    public Set<Book> findBooks(@RequestBody String title, @RequestParam(required = false, defaultValue = "10", name = "show") int toShow) {
+       return bookService.getBookByTitle(title, toShow);
     }
 
     @CrossOrigin
