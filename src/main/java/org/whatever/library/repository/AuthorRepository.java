@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface AuthorRepository extends CrudRepository<Author, Integer>, JpaSpecificationExecutor<Author> {
 
-    @Query(value = "select * from authors where first_name = ?1", nativeQuery = true)
+    @Query(value = "select * from authors where name like ?1%", nativeQuery = true)
     List<Author> findAuthorsByName(String firstName);
 
-    @Query(value = "select * from authors where last_name = ?1", nativeQuery = true)
+    @Query(value = "select * from authors where name like %?1", nativeQuery = true)
     List<Author> findAuthorsByLastName(String lastName);
 
     @Query(value = "select count(*) from authors", nativeQuery = true)

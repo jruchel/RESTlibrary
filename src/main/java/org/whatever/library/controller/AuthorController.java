@@ -65,8 +65,7 @@ public class AuthorController {
     public ResponseEntity updateAuthor(@RequestBody @Valid Author author, @PathVariable int id) {
         Author oldAuthor = getAuthorByID(id);
 
-        oldAuthor.setFirstName(author.getFirstName());
-        oldAuthor.setLastName(author.getLastName());
+        oldAuthor.setName(author.getName());
         for (Book b : oldAuthor.getBibliography()) {
             deleteBook(id, b.getId());
             if (oldAuthor.getBibliography() == null || oldAuthor.getBibliography().size() == 0) break;

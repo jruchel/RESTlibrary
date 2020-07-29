@@ -64,7 +64,7 @@ public class BookController {
     public void addBooks(@RequestBody List<Author> byAuthors) {
         for (Author a : byAuthors) {
             try {
-                Author author = authorService.getAuthorsByName(a.getFirstName(), a.getLastName()).get(0);
+                Author author = authorService.getAuthorsByName(a.getName()).get(0);
                 author.addBooks(a.getBibliography());
                 author.setBibliography(Utils.compress(author.getBibliography()));
                 authorService.save(author);

@@ -1,5 +1,7 @@
 package org.whatever.library.model;
 
+import org.whatever.library.validation.NameConstraint;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +18,9 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    //@NameConstraint
-    @Column(name = "firstName")
-    private String firstName;
-
-    //@NameConstraint
-    @Column(name = "lastName")
-    private String lastName;
+    @NameConstraint
+    @Column(name = "name")
+    private String name;
 
     @OneToMany(mappedBy = "author", cascade = {CascadeType.ALL})
     private List<Book> bibliography;
@@ -35,7 +33,7 @@ public class Author {
     public boolean equals(Object obj) {
         if (!(obj instanceof Author)) return false;
         Author a2 = (Author) obj;
-        return a2.lastName.equals(lastName) && a2.firstName.equals(firstName);
+        return a2.name.equals(name);
     }
 
     private boolean sameBooks(Set<Book> books) {
@@ -77,20 +75,12 @@ public class Author {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Book> getBibliography() {

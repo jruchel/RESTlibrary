@@ -6,14 +6,16 @@ import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 import org.whatever.library.repository.AuthorRepository;
 import org.whatever.library.repository.BookRepository;
+import org.whatever.library.utils.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthorService {
 
+    @Autowired
+    private CollectionUtils<Author> authorCollectionUtils;
     @Autowired
     private AuthorRepository authorRepository;
     @Autowired
@@ -52,7 +54,7 @@ public class AuthorService {
     }
 
     public List<Author> getAuthorsByName(String firstName, String lastName) {
-        return authorRepository.findAuthorsByName(firstName).stream().filter(a -> a.getLastName().equals(lastName)).collect(Collectors.toList());
+        return authorCollectionUtils.getCommonObjects(authorRepository.findAuthorsByLastName(lastName), authorRepository.findAuthorsByName(firstName));
     }
 
     public List<Author> getAuthorsByLastName(String lastName) {

@@ -2,11 +2,11 @@ package org.whatever.library.validation;
 
 public class NameValidator extends Validator<NameConstraint, String> {
 
-    private final int upperLimit = 20;
-    private final int lowerLimit = 2;
+    private final int upperLimit = 50;
+    private final int lowerLimit = 5;
 
     public boolean Constraint_isCorrectFormat(String name) {
-        if (!name.matches("[A-Z][a-z]+")) {
+        if (!name.matches("[A-Za-z.\\- ]+")) {
             addMessage("Incorrect name format, name must start with an uppercase letter and be lowercase letters from then on");
             return false;
         }
