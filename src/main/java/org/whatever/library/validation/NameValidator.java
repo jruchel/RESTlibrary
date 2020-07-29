@@ -3,10 +3,18 @@ package org.whatever.library.validation;
 public class NameValidator extends Validator<NameConstraint, String> {
 
     private final int upperLimit = 50;
-    private final int lowerLimit = 5;
+    private final int lowerLimit = 4;
+
+    public boolean Constraint_notNull(String name) {
+        if (name == null) {
+            addMessage("Name must not be null");
+            return false;
+        }
+        return true;
+    }
 
     public boolean Constraint_isCorrectFormat(String name) {
-        if (!name.matches("[A-Za-z.\\- ]+")) {
+        if (!name.matches("[A-Z][A-Za-z.\\- ]+")) {
             addMessage("Incorrect name format, name must start with an uppercase letter and be lowercase letters from then on");
             return false;
         }
