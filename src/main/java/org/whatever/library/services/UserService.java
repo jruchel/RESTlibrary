@@ -1,10 +1,11 @@
 package org.whatever.library.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.whatever.library.model.User;
-import org.whatever.library.repository.RoleRepository;
 import org.whatever.library.repository.UserRepository;
 
 import java.util.*;
@@ -15,7 +16,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleService roleService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -37,10 +38,62 @@ public class UserService {
         return reservingUsers;
     }
 
+    public User createAdmin(String username, String password) {
+        User user = new User();
+        user.setPassword(password);
+        user.setPasswordConfirm(password);
+        user.setUsername(username);
+        user.setRoles(roleService.getAdminRoles());
+
+        return user;
+    }
+
+    public User createUser(String username, String password) {
+        User user = new User();
+        user.setPassword(password);
+        user.setPasswordConfirm(password);
+        user.setUsername(username);
+        user.setRoles(roleService.getUserRoles());
+
+        return user;
+    }
+
+    public User createModerator(String username, String password) {
+        User user = new User();
+        user.setPassword(password);
+        user.setPasswordConfirm(password);
+        user.setUsername(username);
+        user.setRoles(roleService.getModeratorRoles());
+
+        return user;
+    }
+
+    public User createUser(User user) {
+        return createUser(user.getUsername(), user.getPasswordConfirm());
+    }
+
+    public User createModerator(User user) {
+        return createModerator(user.getUsername(), user.getPasswordConfirm());
+    }
+
+    public User createAdmin(User user) {
+        return createAdmin(user.getUsername(), user.getPasswordConfirm());
+    }
+
+    public String getPrincipalUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails)
+            return ((UserDetails) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getUsername();
+        return principal.toString();
+    }
+
+    public User getCurrentUser() {
+        return findByUsername(getPrincipalUsername());
+    }
+
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>());
-        user.giveRole(roleRepository.getRoleByName("ROLE_USER"));
         userRepository.save(user);
     }
 

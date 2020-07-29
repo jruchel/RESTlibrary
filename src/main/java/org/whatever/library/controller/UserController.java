@@ -35,6 +35,26 @@ public class UserController {
     }
 
     @CrossOrigin
+    @GetMapping("/user")
+    public User getCurrentUser() {
+        return userService.getCurrentUser();
+    }
+
+    @CrossOrigin
+    @PostMapping("/registration/mod")
+    public User registerModerator(@RequestBody User userForm, BindingResult bindingResult) {
+        userValidator.validate(userForm, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return userForm;
+        }
+
+        userService.save(userService.createModerator(userForm));
+        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+        return userForm;
+    }
+
+    @CrossOrigin
     @PostMapping("/registration")
     public User registration(@RequestBody User userForm, BindingResult bindingResult) {
         userValidator.validate(userForm, bindingResult);
@@ -43,7 +63,7 @@ public class UserController {
             return userForm;
         }
 
-        userService.save(userForm);
+        userService.save(userService.createUser(userForm));
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
         return userForm;
     }

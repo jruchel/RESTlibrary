@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface AuthorRepository extends CrudRepository<Author, Integer>, JpaSpecificationExecutor<Author> {
 
-
     @Query(value = "select * from authors where first_name = ?1", nativeQuery = true)
     List<Author> findAuthorsByName(String firstName);
 

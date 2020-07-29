@@ -8,8 +8,6 @@ import org.whatever.library.model.Book;
 import org.whatever.library.services.AuthorService;
 import org.whatever.library.services.BookService;
 import org.whatever.library.utils.Utils;
-
-import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Set;
 

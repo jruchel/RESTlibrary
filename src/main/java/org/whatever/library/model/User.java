@@ -72,6 +72,7 @@ public class User {
     public User() {
         this.roles = new HashSet<>();
         this.reservedBooks = new ArrayList<>();
+        this.rentedBooks = new ArrayList<>();
     }
 
     public Long getId() {

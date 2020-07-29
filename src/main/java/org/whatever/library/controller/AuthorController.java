@@ -29,6 +29,12 @@ public class AuthorController {
     }
 
     @CrossOrigin
+    @GetMapping("/count")
+    public int getAuthorsCount() {
+        return authorService.getAuthorCount();
+    }
+
+    @CrossOrigin
     @GetMapping("/")
     public Iterable<Author> getAllAuthors() {
         return authorService.getAllAuthors();

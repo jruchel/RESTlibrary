@@ -34,13 +34,13 @@ public class RentalController {
     @CrossOrigin
     @PostMapping("/reserve")
     public void reserveBook(@RequestBody int bid) {
-        rentalService.reserveBook(getPrincipalUsername(), bid);
+        rentalService.reserveBook(userService.getPrincipalUsername(), bid);
     }
 
     @CrossOrigin
     @DeleteMapping("/reserve")
     public void cancelReservation(@RequestBody int bid) {
-        rentalService.cancelReservation(getPrincipalUsername(), bid);
+        rentalService.cancelReservation(userService.getPrincipalUsername(), bid);
     }
 
     @CrossOrigin
@@ -70,18 +70,7 @@ public class RentalController {
     @CrossOrigin
     @PostMapping("/return")
     public void returnBook(@RequestBody int bid) {
-        rentalService.returnBook(getPrincipalUsername(), bid);
+        rentalService.returnBook(userService.getPrincipalUsername(), bid);
     }
-
-
-    // ===== private methods =================
-    private String getPrincipalUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (principal instanceof UserDetails)
-            return ((UserDetails) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getUsername();
-        return principal.toString();
-    }
-
 
 }
