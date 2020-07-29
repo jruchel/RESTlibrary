@@ -13,11 +13,11 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("admin/utils")
-public class UtilsController {
+public class UtilityController {
 
 
     @CrossOrigin
-    @GetMapping("/userJSON")
+    @GetMapping("/json/user")
     public String getUserJSONPattern() {
         User user = new User();
         user.setUsername("{}");
@@ -32,7 +32,7 @@ public class UtilsController {
     }
 
     @CrossOrigin
-    @GetMapping("/authorJSON")
+    @GetMapping("/json/author")
     public String getAuthorJSONPattern() {
         Author author = new Author();
         author.setName("{}");
