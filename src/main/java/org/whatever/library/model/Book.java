@@ -37,6 +37,7 @@ public class Book {
     public Book() {
         this.inStock = 1;
         this.reservingUsers = new ArrayList<>();
+        this.rentingUsers = new ArrayList<>();
     }
 
     public List<User> getRentingUsers() {

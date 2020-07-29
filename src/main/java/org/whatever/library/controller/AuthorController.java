@@ -8,8 +8,6 @@ import org.whatever.library.model.Book;
 import org.whatever.library.services.AuthorService;
 import org.whatever.library.services.BookService;
 import org.whatever.library.utils.CollectionUtils;
-
-
 import javax.validation.Valid;
 import java.util.List;
 
