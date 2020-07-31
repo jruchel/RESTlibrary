@@ -3,7 +3,9 @@ package org.whatever.library.services;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
+import com.stripe.model.Refund;
 import com.stripe.model.Token;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.whatever.library.payments.Card;
@@ -18,8 +20,14 @@ import java.util.regex.Pattern;
 @Service
 public class PaymentService {
 
-    @Value("${STRIPE_PUBLIC_KEY}")
     private String publicKey;
+
+    public PaymentService(@Value("${STRIPE_PUBLIC_KEY}") String publicKey) {
+        Stripe.apiKey = publicKey;
+    }
+
+    @Autowired
+    private TransactionService transactionService;
 
     private Charge charge(String token, double amount, Currency currency) throws StripeException {
         Map<String, Object> params = new HashMap<>();
@@ -33,8 +41,19 @@ public class PaymentService {
         return charge(getToken(card), amount, currency);
     }
 
+    public Refund refund(Charge charge) throws StripeException {
+        return refund(charge.getId());
+    }
+
+    public Refund refund(String chargeID) throws StripeException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("charge", chargeID);
+        Refund refund = Refund.create(params);
+        transactionService.deleteTransaction(chargeID);
+        return refund;
+    }
+
     private String getToken(Card card) throws StripeException, TransactionException {
-        Stripe.apiKey = publicKey;
         Map<String, Object> cardMap = new HashMap<>();
         cardMap.put("number", card.getNumber());
         cardMap.put("exp_month", card.getExpirationMonth());

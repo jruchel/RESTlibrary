@@ -3,6 +3,7 @@ package org.whatever.library.payments;
 
 public class Card {
 
+    private int id;
     private long number;
     private int expirationMonth;
     private int expirationYear;
