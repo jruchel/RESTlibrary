@@ -1,5 +1,6 @@
 package org.whatever.library.controller;
 
+import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,15 +28,21 @@ public class PaymentsController {
     @CrossOrigin
     @PostMapping("/card")
     public String charge(@RequestBody Transaction transactionDetails) {
+        Charge charge;
+        try {
+            charge = paymentService.charge(transactionDetails.getCard(), transactionDetails.getAmount(), transactionDetails.getCurrency());
+        } catch (Exception ex) {
+            return ex.getMessage();
+        }
         try {
             User user = userService.getCurrentUser();
-            Charge charge = paymentService.charge(transactionDetails.getCard(), transactionDetails.getAmount(), transactionDetails.getCurrency());
             transactionDetails.setChargeID(charge.getId());
             transactionDetails.setTime(charge.getCreated());
             transactionDetails.setUser(user);
             transactionService.save(transactionDetails);
             return "success";
         } catch (Exception e) {
+            refund(charge.getId());
             return e.getMessage();
         }
     }

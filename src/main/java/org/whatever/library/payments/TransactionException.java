@@ -1,6 +1,5 @@
 package org.whatever.library.payments;
 
-import java.beans.Transient;
 
 public class TransactionException extends Exception {
 
