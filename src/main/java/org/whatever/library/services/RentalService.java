@@ -35,7 +35,6 @@ public class RentalService {
                 user.reserveBook(book);
                 userRepository.save(user);
             }
-
         }
     }
 

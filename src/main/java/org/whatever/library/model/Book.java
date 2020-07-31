@@ -1,12 +1,16 @@
 package org.whatever.library.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "books")
 public class Book {
@@ -39,25 +43,9 @@ public class Book {
         this.reservingUsers = new ArrayList<>();
     }
 
-    public List<User> getRentingUsers() {
-        return rentingUsers;
-    }
-
-    public void setRentingUsers(List<User> rentingUsers) {
-        this.rentingUsers = rentingUsers;
-    }
-
     public void cancelReservation(User user) {
         reservingUsers.remove(user);
         inStock++;
-    }
-
-    public List<User> getReservingUsers() {
-        return reservingUsers;
-    }
-
-    public void setReservingUsers(List<User> reservingUsers) {
-        this.reservingUsers = reservingUsers;
     }
 
     @Override
@@ -70,10 +58,6 @@ public class Book {
         if (!(obj instanceof Book)) return false;
         Book b2 = (Book) obj;
         return b2.getTitle().equals(title) && b2.getAuthor().equals(author);
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void returnBook(User user) {
@@ -97,35 +81,4 @@ public class Book {
         return rentingUsers.size();
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void addToStock(int amount) {
-        inStock += amount;
-    }
-
-    public void setInStock(int inStock) {
-        this.inStock = inStock;
-    }
-
-    public int getInStock() {
-        return inStock;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Author getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
 }
