@@ -1,6 +1,8 @@
 package org.whatever.library.model;
 
 
+import org.whatever.library.payments.Transaction;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,6 +20,9 @@ public class User {
     private String password;
     @Transient
     private String passwordConfirm;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
 
     @ManyToMany
     @JoinTable(
@@ -121,6 +126,14 @@ public class User {
 
     public void revokeRole(String role) {
         this.roles.removeIf(r -> r.getName().equals(role));
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }
 

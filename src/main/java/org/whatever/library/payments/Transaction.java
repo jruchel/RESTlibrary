@@ -1,6 +1,10 @@
 package org.whatever.library.payments;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.whatever.library.model.User;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -19,11 +23,33 @@ public class Transaction {
     private String chargeID;
     private long time;
 
+    @JsonIgnore
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Transaction(Card card, double amount, Currency currency) {
         this();
         this.card = card;
         this.amount = amount;
         this.currency = currency;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Transaction() {
