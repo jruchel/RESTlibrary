@@ -21,13 +21,12 @@ public class PaymentService {
     @Value("${STRIPE_PUBLIC_KEY}")
     private String publicKey;
 
-    public Charge charge(String token, double amount, Currency currency) throws StripeException {
+    private Charge charge(String token, double amount, Currency currency) throws StripeException {
         Map<String, Object> params = new HashMap<>();
         params.put("amount", (int) (amount * 100));
         params.put("currency", currency.toString());
         params.put("source", token);
-        Charge charge = Charge.create(params);
-        return charge;
+        return Charge.create(params);
     }
 
     public Charge charge(Card card, double amount, Currency currency) throws StripeException, TransactionException {
