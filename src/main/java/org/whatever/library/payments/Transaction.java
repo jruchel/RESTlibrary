@@ -44,6 +44,13 @@ public class Transaction {
         chargeID = "";
     }
 
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public void setTime(Date date) {
+        this.time = date.getTime();
+    }
 
 
 }

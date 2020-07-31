@@ -1,6 +1,5 @@
 package org.whatever.library.controller;
 
-import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
