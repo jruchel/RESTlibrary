@@ -36,10 +36,15 @@ public class AuthorController {
 
     @CrossOrigin
     @GetMapping("/")
+    public Iterable<Author> getAllAuthors(@RequestParam(required = false, name = "page", defaultValue = "1") int page, @RequestParam(required = false, name = "elements", defaultValue = "25") int elements) {
+        return authorService.getAllAuthors(page, elements);
+    }
+
+    @CrossOrigin
+    @GetMapping("/all")
     public Iterable<Author> getAllAuthors() {
         return authorService.getAllAuthors();
     }
-
 
     @CrossOrigin
     @GetMapping(value = "/{id}")

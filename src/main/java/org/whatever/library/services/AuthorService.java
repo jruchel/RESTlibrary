@@ -1,6 +1,9 @@
 package org.whatever.library.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
@@ -20,6 +23,17 @@ public class AuthorService {
     private AuthorRepository authorRepository;
     @Autowired
     private BookRepository bookRepository;
+
+    public Iterable<Author> getAllAuthors(int page, int elements) {
+        if (elements <= 0) return getAllAuthors(page);
+        Pageable pageable = PageRequest.of(page - 1, elements);
+        return authorRepository.findAll(pageable);
+    }
+
+    public Iterable<Author> getAllAuthors(int page) {
+        if (page <= 0) return getAllAuthors(1);
+        return getAllAuthors(page, 25);
+    }
 
     public Iterable<Author> getAllAuthors() {
         return authorRepository.findAll();
@@ -70,8 +84,7 @@ public class AuthorService {
     }
 
     public boolean exists(Author author) {
-        List<Author> authorsList = (List<Author>) getAllAuthors();
-        return authorsList.stream().filter(authorInList -> authorInList.equals(author)).count() > 0;
+        return authorRepository.findAuthor(author.getId(), author.getName()) != null;
     }
 
     public void deleteAuthor(int id) {
