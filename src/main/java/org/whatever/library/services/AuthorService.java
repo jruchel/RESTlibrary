@@ -1,7 +1,6 @@
 package org.whatever.library.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -63,16 +62,19 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
-    public List<Author> getAuthorsByName(String firstName) {
-        return authorRepository.findAuthorsByName(firstName);
+    public List<Author> getAuthorsByName(String firstName, int page, int elements) {
+        Pageable pageable = PageRequest.of(page, elements);
+        return authorRepository.findAuthorsByName(firstName, pageable);
     }
 
-    public List<Author> getAuthorsByName(String firstName, String lastName) {
-        return authorCollectionUtils.getCommonObjects(authorRepository.findAuthorsByLastName(lastName), authorRepository.findAuthorsByName(firstName));
+    public List<Author> getAuthorsByName(String firstName, String lastName, int page, int elements) {
+        Pageable pageable = PageRequest.of(page, elements);
+        return authorRepository.findAuthorsByFullName(firstName, lastName, pageable);
     }
 
-    public List<Author> getAuthorsByLastName(String lastName) {
-        return authorRepository.findAuthorsByLastName(lastName);
+    public List<Author> getAuthorsByLastName(String lastName, int page, int elements) {
+        Pageable pageable = PageRequest.of(page, elements);
+        return authorRepository.findAuthorsByLastName(lastName, pageable);
     }
 
     public List<Author> getAuthorsWithBookTitled(String title) {

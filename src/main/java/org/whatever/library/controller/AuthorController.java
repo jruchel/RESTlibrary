@@ -36,7 +36,8 @@ public class AuthorController {
 
     @CrossOrigin
     @GetMapping("/")
-    public Iterable<Author> getAllAuthors(@RequestParam(required = false, name = "page", defaultValue = "1") int page, @RequestParam(required = false, name = "elements", defaultValue = "25") int elements) {
+    public Iterable<Author> getAllAuthors(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
+                                          @RequestParam(required = false, name = "elements", defaultValue = "25") int elements) {
         return authorService.getAllAuthors(page, elements);
     }
 
@@ -86,12 +87,15 @@ public class AuthorController {
     public List<Author> searchAuthors(
             @RequestParam(required = false, name = "name") String name,
             @RequestParam(required = false, name = "lastName") String lastName,
-            @RequestParam(required = false, name = "title") String title) {
+            @RequestParam(required = false, name = "title") String title,
+            @RequestParam(required = false, name = "page", defaultValue = "1") int page,
+            @RequestParam(required = false, name = "elements", defaultValue = "25") int elements) {
         List<Author> byName = null;
         List<Author> byTitle = null;
         List<Author> byLastName = null;
-        if (!(name == null || name.isEmpty())) byName = authorService.getAuthorsByName(name);
-        if (!(lastName == null || lastName.isEmpty())) byLastName = authorService.getAuthorsByLastName(lastName);
+        if (!(name == null || name.isEmpty())) byName = authorService.getAuthorsByName(name, page, elements);
+        if (!(lastName == null || lastName.isEmpty()))
+            byLastName = authorService.getAuthorsByLastName(lastName, page, elements);
         if (!(title == null || title.isEmpty())) byTitle = authorService.getAuthorsWithBookTitled(title);
 
 

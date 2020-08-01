@@ -8,6 +8,7 @@ import org.whatever.library.model.Book;
 import org.whatever.library.services.AuthorService;
 import org.whatever.library.services.BookService;
 import org.whatever.library.utils.Utils;
+
 import java.util.List;
 import java.util.Set;
 
@@ -61,10 +62,12 @@ public class BookController {
 
     @CrossOrigin
     @PostMapping("/bookDelivery")
-    public void addBooks(@RequestBody List<Author> byAuthors) {
+    public void addBooks(@RequestBody List<Author> byAuthors,
+                         @RequestParam(required = false, name = "page", defaultValue = "1") int page,
+                         @RequestParam(required = false, name = "elements", defaultValue = "25") int elements) {
         for (Author a : byAuthors) {
             try {
-                Author author = authorService.getAuthorsByName(a.getName()).get(0);
+                Author author = authorService.getAuthorsByName(a.getName(), page, elements).get(0);
                 author.addBooks(a.getBibliography());
                 author.setBibliography(Utils.compress(author.getBibliography()));
                 authorService.save(author);
@@ -78,7 +81,7 @@ public class BookController {
     @CrossOrigin
     @GetMapping("/search")
     public Set<Book> findBooks(@RequestBody String title, @RequestParam(required = false, defaultValue = "10", name = "show") int toShow) {
-       return bookService.getBookByTitle(title, toShow);
+        return bookService.getBookByTitle(title, toShow);
     }
 
     @CrossOrigin
