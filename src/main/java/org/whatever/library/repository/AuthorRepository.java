@@ -12,13 +12,22 @@ import java.util.List;
 
 
 @Repository
-public interface AuthorRepository extends PagingAndSortingRepository<Author, Integer>, JpaSpecificationExecutor<Author> {
+public interface AuthorRepository extends PagingAndSortingRepository<Author, Integer> {
 
     @Query(value = "select * from authors where name like ?1%", nativeQuery = true)
     List<Author> findAuthorsByName(String firstName, Pageable pageable);
 
+    @Query(value = "select * from authors where name like ?1%", nativeQuery = true)
+    List<Author> findAuthorsByName(String firstName);
+
     @Query(value = "select * from authors where name like ?1% and name like %?2", nativeQuery = true)
     List<Author> findAuthorsByFullName(String firstName, String lastName, Pageable pageable);
+
+    @Query(value = "select * from authors where name like ?1% and name like %?2", nativeQuery = true)
+    List<Author> findAuthorsByFullName(String firstName, String lastName);
+
+    @Query(value = "select * from authors where name like %?1", nativeQuery = true)
+    List<Author> findAuthorsByLastName(String lastName);
 
     @Query(value = "select * from authors where name like %?1", nativeQuery = true)
     List<Author> findAuthorsByLastName(String lastName, Pageable pageable);

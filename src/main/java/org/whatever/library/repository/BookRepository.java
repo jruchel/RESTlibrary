@@ -1,20 +1,30 @@
 package org.whatever.library.repository;
 
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.whatever.library.model.Book;
 
 import java.util.List;
 import java.util.Set;
 
-public interface BookRepository extends CrudRepository<Book, Integer>, JpaSpecificationExecutor<Book> {
+public interface BookRepository extends PagingAndSortingRepository<Book, Integer> {
+
+    @Query(value = "SELECT author_id from books where title = ?1", nativeQuery = true)
+    Page<Integer> getAuthorIDsWithTitle(String title, Pageable pageable);
 
     @Query(value = "SELECT author_id from books where title = ?1", nativeQuery = true)
     List<Integer> getAuthorIDsWithTitle(String title);
 
     @Query(value = "SELECT book_id FROM users_books_reserving", nativeQuery = true)
+    Page<Book> getReservedBooks(Pageable pageable);
+
+    @Query(value = "SELECT book_id FROM users_books_reserving", nativeQuery = true)
     List<Book> getReservedBooks();
+
+    @Query(value = "SELECT book_id FROM users_books_renting", nativeQuery = true)
+    Page<Book> getRentedBooks(Pageable pageable);
 
     @Query(value = "SELECT book_id FROM users_books_renting", nativeQuery = true)
     List<Book> getRentedBooks();
@@ -26,6 +36,6 @@ public interface BookRepository extends CrudRepository<Book, Integer>, JpaSpecif
     int getLibrarySize();
 
     @Query(value = "select * from books where title like ?1% limit ?2", nativeQuery = true)
-    Set<Book> getBooksByTitle(String title, int limit);
+    Page<Book> getBooksByTitle(String title, Pageable pageable);
 
 }

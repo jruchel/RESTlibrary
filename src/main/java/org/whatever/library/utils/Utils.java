@@ -1,5 +1,9 @@
 package org.whatever.library.utils;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.whatever.library.Properties;
 import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 
@@ -36,5 +40,13 @@ public class Utils {
         }
 
         return authorSet;
+    }
+
+    public static Pageable getPageable(int page, int elements) {
+        return PageRequest.of(page - 1, elements);
+    }
+
+    public static Pageable getPageable(int page) {
+        return getPageable(page, Properties.getPageElements());
     }
 }

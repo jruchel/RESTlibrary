@@ -1,13 +1,14 @@
 package org.whatever.library.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.whatever.library.model.Book;
 import org.whatever.library.repository.BookRepository;
+import org.whatever.library.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class BookService {
@@ -27,6 +28,11 @@ public class BookService {
         }
     }
 
+    public Page<Book> getRentedBooks(int page, int elements) {
+
+        return bookRepository.getRentedBooks(Utils.getPageable(page, elements));
+    }
+
     public List<Book> getRentedBooks() {
         return bookRepository.getRentedBooks();
     }
@@ -43,8 +49,12 @@ public class BookService {
         return books;
     }
 
-    public Set<Book> getBookByTitle(String title, int limit) {
-        return bookRepository.getBooksByTitle(title, limit);
+    public Page<Book> getBookByTitle(String title, int page, int elements) {
+        return bookRepository.getBooksByTitle(title, Utils.getPageable(page, elements));
+    }
+
+    public Page<Book> getBookByTitle(String title, int page) {
+        return bookRepository.getBooksByTitle(title, Utils.getPageable(page));
     }
 
     public int getLibrarySize() {

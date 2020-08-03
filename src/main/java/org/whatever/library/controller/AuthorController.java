@@ -93,7 +93,7 @@ public class AuthorController {
         List<Author> byName = null;
         List<Author> byTitle = null;
         List<Author> byLastName = null;
-        if (!(name == null || name.isEmpty())) byName = authorService.getAuthorsByName(name, page, elements);
+        if (!(name == null || name.isEmpty())) byName = authorService.getAuthorsByName(name);
         if (!(lastName == null || lastName.isEmpty()))
             byLastName = authorService.getAuthorsByLastName(lastName, page, elements);
         if (!(title == null || title.isEmpty())) byTitle = authorService.getAuthorsWithBookTitled(title);

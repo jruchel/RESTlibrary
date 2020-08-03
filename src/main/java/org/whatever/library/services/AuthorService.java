@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.whatever.library.Properties;
 import org.whatever.library.model.Author;
 import org.whatever.library.model.Book;
 import org.whatever.library.repository.AuthorRepository;
 import org.whatever.library.repository.BookRepository;
 import org.whatever.library.utils.CollectionUtils;
-
+import org.whatever.library.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +24,10 @@ public class AuthorService {
     @Autowired
     private BookRepository bookRepository;
 
+
     public Iterable<Author> getAllAuthors(int page, int elements) {
         if (elements <= 0) return getAllAuthors(page);
-        Pageable pageable = PageRequest.of(page - 1, elements);
-        return authorRepository.findAll(pageable);
+        return authorRepository.findAll(Utils.getPageable(page, elements));
     }
 
     public Iterable<Author> getAllAuthors(int page) {
@@ -63,8 +64,11 @@ public class AuthorService {
     }
 
     public List<Author> getAuthorsByName(String firstName, int page, int elements) {
-        Pageable pageable = PageRequest.of(page, elements);
-        return authorRepository.findAuthorsByName(firstName, pageable);
+        return authorRepository.findAuthorsByName(firstName, Utils.getPageable(page, elements));
+    }
+
+    public List<Author> getAuthorsByName(String firstName) {
+        return authorRepository.findAuthorsByName(firstName);
     }
 
     public List<Author> getAuthorsByName(String firstName, String lastName, int page, int elements) {
@@ -77,6 +81,18 @@ public class AuthorService {
         return authorRepository.findAuthorsByLastName(lastName, pageable);
     }
 
+    public List<Author> getAuthorsWithBookTitled(String title, int page, int elements) {
+        List<Author> authors = new ArrayList<>();
+        for (Integer i : bookRepository.getAuthorIDsWithTitle(title, Utils.getPageable(page, elements))) {
+            authors.add(getAuthorByID(i));
+        }
+        return authors;
+    }
+
+    public List<Author> getAuthorsWithBookTitled(String title, int page) {
+        return getAuthorsWithBookTitled(title, page, Properties.getPageElements());
+    }
+
     public List<Author> getAuthorsWithBookTitled(String title) {
         List<Author> authors = new ArrayList<>();
         for (Integer i : bookRepository.getAuthorIDsWithTitle(title)) {
@@ -84,7 +100,6 @@ public class AuthorService {
         }
         return authors;
     }
-
     public boolean exists(Author author) {
         return authorRepository.findAuthor(author.getId(), author.getName()) != null;
     }

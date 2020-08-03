@@ -1,5 +1,6 @@
 package org.whatever.library.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,6 @@ import org.whatever.library.services.BookService;
 import org.whatever.library.utils.Utils;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/books")
@@ -80,7 +80,7 @@ public class BookController {
 
     @CrossOrigin
     @GetMapping("/search")
-    public Set<Book> findBooks(@RequestBody String title, @RequestParam(required = false, defaultValue = "10", name = "show") int toShow) {
+    public Page<Book> findBooks(@RequestBody String title, @RequestParam(required = false, defaultValue = "10", name = "show") int toShow) {
         return bookService.getBookByTitle(title, toShow);
     }
 
