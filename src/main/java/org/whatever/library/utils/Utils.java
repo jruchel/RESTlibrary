@@ -47,6 +47,6 @@ public class Utils {
     }
 
     public static Pageable getPageable(int page) {
-        return getPageable(page, Properties.getPageElements());
+        return getPageable(page, Properties.getInstance().getPageElements());
     }
 }
