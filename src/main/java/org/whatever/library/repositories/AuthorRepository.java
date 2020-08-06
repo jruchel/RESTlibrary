@@ -1,12 +1,11 @@
-package org.whatever.library.repository;
+package org.whatever.library.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import org.whatever.library.model.Author;
+import org.whatever.library.models.Author;
 
 import java.util.List;
 

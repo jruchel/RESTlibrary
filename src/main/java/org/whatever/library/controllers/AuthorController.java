@@ -1,10 +1,10 @@
-package org.whatever.library.controller;
+package org.whatever.library.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.whatever.library.model.Author;
-import org.whatever.library.model.Book;
+import org.whatever.library.models.Author;
+import org.whatever.library.models.Book;
 import org.whatever.library.services.AuthorService;
 import org.whatever.library.services.BookService;
 import org.whatever.library.utils.CollectionUtils;

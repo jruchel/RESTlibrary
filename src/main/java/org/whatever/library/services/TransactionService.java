@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.whatever.library.payments.Transaction;
-import org.whatever.library.repository.TransactionRepository;
+import org.whatever.library.repositories.TransactionRepository;
 
 import java.util.Currency;
 import java.util.List;

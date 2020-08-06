@@ -1,4 +1,4 @@
-package org.whatever.library.model;
+package org.whatever.library.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;

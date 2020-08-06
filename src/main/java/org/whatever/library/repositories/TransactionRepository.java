@@ -1,4 +1,4 @@
-package org.whatever.library.repository;
+package org.whatever.library.repositories;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

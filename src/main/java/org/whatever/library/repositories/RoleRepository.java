@@ -1,8 +1,8 @@
-package org.whatever.library.repository;
+package org.whatever.library.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.whatever.library.model.Role;
+import org.whatever.library.models.Role;
 import java.util.Set;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {

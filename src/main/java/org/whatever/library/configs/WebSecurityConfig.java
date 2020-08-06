@@ -1,4 +1,4 @@
-package org.whatever.library.configuration;
+package org.whatever.library.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

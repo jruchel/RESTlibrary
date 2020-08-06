@@ -2,8 +2,8 @@ package org.whatever.library.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.whatever.library.model.Role;
-import org.whatever.library.repository.RoleRepository;
+import org.whatever.library.models.Role;
+import org.whatever.library.repositories.RoleRepository;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -2,15 +2,13 @@ package org.whatever.library.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.whatever.library.model.Author;
-import org.whatever.library.model.Book;
-import org.whatever.library.model.User;
-import org.whatever.library.repository.AuthorRepository;
-import org.whatever.library.repository.BookRepository;
-import org.whatever.library.repository.UserRepository;
+import org.whatever.library.models.Book;
+import org.whatever.library.models.User;
+import org.whatever.library.repositories.AuthorRepository;
+import org.whatever.library.repositories.BookRepository;
+import org.whatever.library.repositories.UserRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class RentalService {

@@ -1,8 +1,8 @@
-package org.whatever.library.repository;
+package org.whatever.library.repositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.whatever.library.model.User;
+import org.whatever.library.models.User;
 import java.util.Set;
 
 public interface UserRepository extends CrudRepository<User, Long> {

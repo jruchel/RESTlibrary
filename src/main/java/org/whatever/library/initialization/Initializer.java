@@ -3,10 +3,10 @@ package org.whatever.library.initialization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.whatever.library.repository.RoleRepository;
-import org.whatever.library.repository.UserRepository;
-import org.whatever.library.model.Role;
-import org.whatever.library.model.User;
+import org.whatever.library.repositories.RoleRepository;
+import org.whatever.library.repositories.UserRepository;
+import org.whatever.library.models.Role;
+import org.whatever.library.models.User;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;

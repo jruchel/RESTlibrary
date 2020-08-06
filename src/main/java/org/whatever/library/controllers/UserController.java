@@ -1,9 +1,9 @@
-package org.whatever.library.controller;
+package org.whatever.library.controllers;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.whatever.library.security.SecurityService;
-import org.whatever.library.model.User;
+import org.whatever.library.models.User;
 import org.whatever.library.services.UserService;
 import org.whatever.library.validation.UserValidator;
 

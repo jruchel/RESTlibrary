@@ -1,12 +1,10 @@
-package org.whatever.library.controller;
+package org.whatever.library.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.whatever.library.model.Admin;
-import org.whatever.library.model.Book;
-import org.whatever.library.model.User;
+import org.whatever.library.models.Admin;
+import org.whatever.library.models.Book;
+import org.whatever.library.models.User;
 import org.whatever.library.services.BookService;
 import org.whatever.library.services.RentalService;
 import org.whatever.library.services.UserService;

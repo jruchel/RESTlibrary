@@ -3,7 +3,7 @@ package org.whatever.library.payments;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import org.whatever.library.model.User;
+import org.whatever.library.models.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

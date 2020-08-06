@@ -3,8 +3,8 @@ package org.whatever.library.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import org.whatever.library.model.Book;
-import org.whatever.library.repository.BookRepository;
+import org.whatever.library.models.Book;
+import org.whatever.library.repositories.BookRepository;
 import org.whatever.library.utils.Utils;
 
 import java.util.ArrayList;

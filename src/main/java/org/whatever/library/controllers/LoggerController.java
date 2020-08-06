@@ -1,4 +1,4 @@
-package org.whatever.library.controller;
+package org.whatever.library.controllers;
 
 import javafx.util.Pair;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,9 +1,9 @@
-package org.whatever.library.controller;
+package org.whatever.library.controllers;
 
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.whatever.library.model.User;
+import org.whatever.library.models.User;
 import org.whatever.library.payments.Transaction;
 
 import org.whatever.library.services.PaymentService;
