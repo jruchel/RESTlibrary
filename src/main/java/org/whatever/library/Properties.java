@@ -1,12 +1,25 @@
 package org.whatever.library;
 
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
+@Getter
 public class Properties {
 
-    @Getter
     @Value("${page.elements}")
-    private static int pageElements;
+    private int pageElements;
 
+    private static Properties instance;
+
+    @Autowired
+    public void setInstance(Properties properties) {
+        Properties.instance = properties;
+    }
+
+    public static Properties getInstance() {
+        return instance;
+    }
 }

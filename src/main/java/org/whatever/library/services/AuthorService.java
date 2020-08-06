@@ -90,7 +90,7 @@ public class AuthorService {
     }
 
     public List<Author> getAuthorsWithBookTitled(String title, int page) {
-        return getAuthorsWithBookTitled(title, page, Properties.getPageElements());
+        return getAuthorsWithBookTitled(title, page, Properties.getInstance().getPageElements());
     }
 
     public List<Author> getAuthorsWithBookTitled(String title) {
