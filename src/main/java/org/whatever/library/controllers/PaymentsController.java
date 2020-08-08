@@ -1,14 +1,23 @@
 package org.whatever.library.controllers;
 
+import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.whatever.library.models.User;
+import org.whatever.library.payments.Refund;
 import org.whatever.library.payments.Transaction;
 
+import org.whatever.library.security.IllegalActionException;
 import org.whatever.library.services.PaymentService;
+import org.whatever.library.services.RefundService;
 import org.whatever.library.services.TransactionService;
 import org.whatever.library.services.UserService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -19,13 +28,16 @@ public class PaymentsController {
     private PaymentService paymentService;
 
     @Autowired
+    private RefundService refundService;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private TransactionService transactionService;
 
     @CrossOrigin
-    @PostMapping("/card")
+    @PostMapping("/user/card")
     public String charge(@RequestBody Transaction transactionDetails) {
         Charge charge;
         try {
@@ -41,20 +53,68 @@ public class PaymentsController {
             transactionService.save(transactionDetails);
             return "success";
         } catch (Exception e) {
-            refund(charge.getId());
+            try {
+                refundService.refund(charge.getId());
+                return "Transaction error, transaction has been refunded";
+            } catch (StripeException ex) {
+                Map<String, String> params = new HashMap<>();
+                params.put("chargeid", charge.getId());
+                params.put("message", "Payment error");
+                refund(params);
+                return "Transaction and refund error, refund has been requested";
+            }
+        }
+
+    }
+
+
+    @CrossOrigin
+    @PostMapping("/user/refund")
+    public String refund(@RequestBody Map<String, String> params) {
+        Transaction transaction = transactionService.findByChargeID(params.get("chargeid"));
+        String message = params.get("message");
+        if (transaction.getRefunds().stream().anyMatch(refund -> refund.getStatus().equals(Refund.Status.Pending)))
+            return "There is already a pending refund for this transaction";
+
+        try {
+            refundService.requestRefund(transaction, message);
+            return "success";
+        } catch (IllegalActionException e) {
             return e.getMessage();
         }
     }
 
     @CrossOrigin
-    @PostMapping("/refund")
-    public String refund(@RequestBody String chargeID) {
+    @PostMapping("/moderator/refund")
+    public String resolveRefund(@RequestBody Map<String, String> params) {
+        String refundID = params.get("rid");
+        String reason = params.get("reason");
+        String decision = params.get("decision");
+
         try {
-            paymentService.refund(chargeID);
+            refundService.performRefund(Integer.parseInt(refundID), reason, Boolean.parseBoolean(decision));
             return "success";
-        } catch (Exception ex) {
-            return ex.getMessage();
+        } catch (StripeException e) {
+            return e.getMessage();
         }
+    }
+
+    @CrossOrigin
+    @GetMapping("/moderator/refunds")
+    public List<Refund> getPendingRefunds() {
+        return refundService.getRefundsWithStatus("Pending");
+    }
+
+    @CrossOrigin
+    @GetMapping("/user/refunds")
+    public List<Refund> getUserRefunds() {
+        User user = userService.getCurrentUser();
+        List<Refund> refunds = new ArrayList<>();
+
+        for (Transaction transaction : user.getTransactions()) {
+            refunds.addAll(transaction.getRefunds());
+        }
+        return refunds;
     }
 
 }

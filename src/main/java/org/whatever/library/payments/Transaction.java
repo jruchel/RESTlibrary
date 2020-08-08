@@ -7,7 +7,9 @@ import org.whatever.library.models.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +28,10 @@ public class Transaction {
     private Currency currency;
     private String chargeID;
     private long time;
+    private boolean refunded;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transaction")
+    private List<Refund> refunds;
 
     @JsonIgnore
     @NotNull
@@ -42,6 +48,8 @@ public class Transaction {
 
     public Transaction() {
         chargeID = "";
+        this.refunds = new ArrayList<>();
+        this.refunded = false;
     }
 
     public void setTime(long time) {

@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -21,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -30,10 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/admin/**", "/users/**", "/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/authors", "authors/{id}/**", "authors/{id}", "authors/all").hasRole("MODERATOR")
+                .antMatchers(HttpMethod.POST, "/authors", "authors/{id}/**", "authors/{id}", "authors/all", "payments/resolve/**").hasRole("MODERATOR")
+                .antMatchers("payments/moderator/**").hasRole("MODERATOR")
                 .antMatchers("rental/**").hasRole("MODERATOR")
                 .antMatchers(HttpMethod.GET, "/authors/**", "/authors").hasRole("USER")
-                .antMatchers("rental/reserve", "rental/return", "books/count", "books/size", "books/search", "/user", "/payments/**").hasRole("USER")
+                .antMatchers("rental/reserve", "rental/return", "books/count", "books/size", "books/search", "/user", "/payments/user/**").hasRole("USER")
                 .antMatchers("/registration", "/error", "/test/**", "/logger/", "/temp/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -52,6 +54,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 }

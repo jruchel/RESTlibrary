@@ -20,8 +20,6 @@ import java.util.regex.Pattern;
 @Service
 public class PaymentService {
 
-    private String publicKey;
-
     public PaymentService(@Value("${STRIPE_PUBLIC_KEY}") String publicKey) {
         Stripe.apiKey = publicKey;
     }
@@ -39,18 +37,6 @@ public class PaymentService {
 
     public Charge charge(Card card, double amount, Currency currency) throws StripeException, TransactionException {
         return charge(getToken(card), amount, currency);
-    }
-
-    public Refund refund(Charge charge) throws StripeException {
-        return refund(charge.getId());
-    }
-
-    public Refund refund(String chargeID) throws StripeException {
-        Map<String, Object> params = new HashMap<>();
-        params.put("charge", chargeID);
-        Refund refund = Refund.create(params);
-        transactionService.deleteTransaction(chargeID);
-        return refund;
     }
 
     private String getToken(Card card) throws StripeException, TransactionException {
@@ -89,6 +75,7 @@ public class PaymentService {
             return matcher.group(1);
         else return "";
     }
+
 
     private boolean isError(String transactionResult) {
         return transactionResult.contains("\"error\":");
