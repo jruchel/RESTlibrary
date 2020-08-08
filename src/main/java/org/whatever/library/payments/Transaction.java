@@ -29,6 +29,7 @@ public class Transaction {
     private String chargeID;
     private long time;
     private boolean refunded;
+    private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "transaction")
     private List<Refund> refunds;
@@ -50,6 +51,7 @@ public class Transaction {
         chargeID = "";
         this.refunds = new ArrayList<>();
         this.refunded = false;
+        this.time = new Date().getTime();
     }
 
     public void setTime(long time) {

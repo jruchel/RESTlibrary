@@ -4,15 +4,16 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.whatever.library.Properties;
+import org.whatever.library.models.Role;
 import org.whatever.library.models.User;
+import org.whatever.library.payments.Card;
+import org.whatever.library.payments.Currency;
 import org.whatever.library.payments.Refund;
 import org.whatever.library.payments.Transaction;
 
 import org.whatever.library.security.IllegalActionException;
-import org.whatever.library.services.PaymentService;
-import org.whatever.library.services.RefundService;
-import org.whatever.library.services.TransactionService;
-import org.whatever.library.services.UserService;
+import org.whatever.library.services.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/payments")
 public class PaymentsController {
+
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private PaymentService paymentService;
@@ -64,10 +68,29 @@ public class PaymentsController {
                 return "Transaction and refund error, refund has been requested";
             }
         }
-
     }
 
+    @CrossOrigin
+    @PostMapping("/user/subscribe")
+    public String subscribe(@RequestBody Card card) {
+        User user = userService.getCurrentUser();
+        Role role = roleService.getRoleByName("ROLE_SUBSCRIBER");
+        if (user.getRoles().contains(role)) return "You are already subscribed";
 
+        Transaction subscription = new Transaction();
+        subscription.setCard(card);
+        subscription.setUser(user);
+        subscription.setDescription("Subscription payment");
+        subscription.setAmount(Properties.getInstance().getSubscriptionPriceMonthly());
+        subscription.setCurrency(Currency.USD);
+        String result = charge(subscription);
+        if (result.equals("success")) {
+            user.giveRole(role);
+            userService.save(user);
+        }
+        return result;
+    }
+    
     @CrossOrigin
     @PostMapping("/user/refund")
     public String refund(@RequestBody Map<String, String> params) {

@@ -6,6 +6,7 @@ import org.whatever.library.models.Admin;
 import org.whatever.library.models.Book;
 import org.whatever.library.models.User;
 import org.whatever.library.services.BookService;
+import org.whatever.library.services.PaymentService;
 import org.whatever.library.services.RentalService;
 import org.whatever.library.services.UserService;
 
@@ -23,8 +24,10 @@ public class RentalController {
     private UserService userService;
 
     @Autowired
-    private BookService bookService;
+    private PaymentService paymentService;
 
+    @Autowired
+    private BookService bookService;
 
     @Autowired
     private RentalService rentalService;

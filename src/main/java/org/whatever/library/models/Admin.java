@@ -16,7 +16,7 @@ public class Admin {
             user.getRentedBooks().add(book);
             book.getReservingUsers().remove(user);
             book.getRentingUsers().add(user);
-            userService.save(user);
+            userService.register(user);
         }
     }
 

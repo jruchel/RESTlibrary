@@ -12,6 +12,9 @@ public class Properties {
     @Value("${page.elements}")
     private int pageElements;
 
+    @Value("${subscription.price.monthly.usd}")
+    private int subscriptionPriceMonthly;
+
     private static Properties instance;
 
     @Autowired

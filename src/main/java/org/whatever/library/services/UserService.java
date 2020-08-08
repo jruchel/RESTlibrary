@@ -92,8 +92,12 @@ public class UserService {
         return findByUsername(getPrincipalUsername());
     }
 
-    public void save(User user) {
+    public void register(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        save(user);
+    }
+
+    public void save(User user) {
         userRepository.save(user);
     }
 

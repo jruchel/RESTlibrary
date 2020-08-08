@@ -49,7 +49,7 @@ public class UserController {
             return userForm;
         }
 
-        userService.save(userService.createModerator(userForm));
+        userService.register(userService.createModerator(userForm));
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
         return userForm;
     }
@@ -63,7 +63,7 @@ public class UserController {
             return userForm;
         }
 
-        userService.save(userService.createUser(userForm));
+        userService.register(userService.createUser(userForm));
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
         return userForm;
     }

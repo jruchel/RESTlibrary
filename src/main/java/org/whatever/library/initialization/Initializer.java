@@ -1,7 +1,7 @@
 package org.whatever.library.initialization;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.whatever.library.repositories.RoleRepository;
 import org.whatever.library.repositories.UserRepository;
@@ -18,7 +18,7 @@ public class Initializer {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository roleRepository;
 
@@ -27,7 +27,7 @@ public class Initializer {
         User user = new User();
         user.setUsername("admin");
         user.setPassword("admin1");
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         for (Role r : roleRepository.getAllRoles()) {
             user.giveRole(r);
         }
@@ -42,9 +42,12 @@ public class Initializer {
         user.setName("ROLE_USER");
         Role mod = new Role();
         mod.setName("ROLE_MODERATOR");
+        Role sub = new Role();
+        sub.setName("ROLE_SUBSCRIBER");
         roles.add(admin);
         roles.add(user);
         roles.add(mod);
+        roles.add(sub);
         return roles;
     }
 
