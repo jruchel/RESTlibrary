@@ -34,7 +34,7 @@ public interface BookRepository extends PagingAndSortingRepository<Book, Integer
     @Query(value = "SELECT sum(in_stock) FROM library.books", nativeQuery = true)
     int getLibrarySize();
 
-    @Query(value = "select * from books where title like ?1% limit ?2", nativeQuery = true)
+    @Query(value = "select * from books where title like %?1%", nativeQuery = true)
     Page<Book> getBooksByTitle(String title, Pageable pageable);
 
 }

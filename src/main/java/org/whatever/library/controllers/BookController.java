@@ -80,8 +80,10 @@ public class BookController {
 
     @CrossOrigin
     @GetMapping("/search")
-    public Page<Book> findBooks(@RequestBody String title, @RequestParam(required = false, defaultValue = "10", name = "show") int toShow) {
-        return bookService.getBookByTitle(title, toShow);
+    public Page<Book> findBooks(@RequestBody String title,
+                                @RequestParam(required = false, name = "page", defaultValue = "1") int page,
+                                @RequestParam(required = false, name = "elements", defaultValue = "25") int elements) {
+        return bookService.getBookByTitle(title, page, elements);
     }
 
     @CrossOrigin
