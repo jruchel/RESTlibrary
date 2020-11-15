@@ -33,15 +33,15 @@ public class RentalController {
     private RentalService rentalService;
 
     @CrossOrigin
-    @PostMapping("/reserve")
-    public void reserveBook(@RequestBody int bid) {
-        rentalService.reserveBook(userService.getPrincipalUsername(), bid);
+    @PostMapping("/reserve/{id}")
+    public void reserveBook(@PathVariable int id) {
+        rentalService.reserveBook(userService.getPrincipalUsername(), id);
     }
 
     @CrossOrigin
-    @DeleteMapping("/reserve")
-    public void cancelReservation(@RequestBody int bid) {
-        rentalService.cancelReservation(userService.getPrincipalUsername(), bid);
+    @DeleteMapping("/reserve/{id}")
+    public void cancelReservation(@PathVariable int id) {
+        rentalService.cancelReservation(userService.getPrincipalUsername(), id);
     }
 
     @CrossOrigin

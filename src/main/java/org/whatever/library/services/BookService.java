@@ -76,6 +76,10 @@ public class BookService {
         return null;
     }
 
+    public int findAuthorIDByBookID(int bid) {
+        return bookRepository.findAuthorIDByBookID(bid);
+    }
+
     public void deleteBookByID(int bid) {
         bookRepository.deleteById(bid);
     }

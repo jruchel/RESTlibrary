@@ -37,6 +37,12 @@ public class BookController {
     }
 
     @CrossOrigin
+    @GetMapping("/author/{id}")
+    public int getBooksAmount(@PathVariable int id) {
+        return bookService.findAuthorIDByBookID(id);
+    }
+
+    @CrossOrigin
     @GetMapping("/{id}/books")
     public @ResponseBody
     Iterable<Book> getAllBooks(@PathVariable int id) {
