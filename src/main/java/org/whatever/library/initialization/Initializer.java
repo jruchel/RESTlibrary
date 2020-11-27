@@ -9,7 +9,6 @@ import org.whatever.library.models.Role;
 import org.whatever.library.models.User;
 
 import javax.annotation.PostConstruct;
-import javax.jws.soap.SOAPBinding;
 import java.util.HashSet;
 import java.util.Set;
 
