@@ -9,6 +9,7 @@ import org.whatever.library.models.Role;
 import org.whatever.library.models.User;
 
 import javax.annotation.PostConstruct;
+import javax.jws.soap.SOAPBinding;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +28,18 @@ public class Initializer {
         User user = new User();
         user.setUsername("admin");
         user.setPassword("admin1");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        for (Role r : roleRepository.getAllRoles()) {
+            user.giveRole(r);
+        }
+        userRepository.save(user);
+    }
+
+    private void createUser(String username, String password) {
+        if (userRepository.findByUsername(username) != null) return;
+        User user = new User();
+        user.setPassword(password);
+        user.setUsername(username);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         for (Role r : roleRepository.getAllRoles()) {
             user.giveRole(r);
@@ -62,6 +75,7 @@ public class Initializer {
     private void initialize() {
         initializeRoles();
         createAdmin();
+        createUser("user", "admin1");
     }
 
 }

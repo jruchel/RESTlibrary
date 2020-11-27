@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Qualifier("userDetailsServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
@@ -36,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("rental/**").hasRole("MODERATOR")
                 .antMatchers("rental/reserve", "rental/return", "/payments/user/unsubscribe").hasRole("SUBSCRIBER")
                 .antMatchers(HttpMethod.GET, "/authors/**", "/authors").hasRole("USER")
-                .antMatchers("books/count", "books/size", "books/search", "/user", "/payments/user/**", "/books/author/*").hasRole("USER")
+                .antMatchers("books/count", "books/size", "books/search", "/user", "/payments/user/**", "/books/author/*", "/payments/currencies").hasRole("USER")
                 .antMatchers("/registration", "/error", "/test/**", "/logger/", "/temp/login").permitAll()
                 .anyRequest().authenticated()
                 .and()

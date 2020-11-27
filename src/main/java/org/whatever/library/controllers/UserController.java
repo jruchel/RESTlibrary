@@ -21,11 +21,17 @@ public class UserController {
     }
 
     @CrossOrigin
+    @ResponseBody
     @PostMapping("/temp/login")
-    public void login(@RequestBody User user) {
-        if (user.getPassword().equals(user.getPasswordConfirm())) {
-            securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
+    public boolean login(@RequestBody User user) {
+        try {
+            if (user.getPassword().equals(user.getPasswordConfirm())) {
+                securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
+            }
+        } catch (Exception ex) {
+            return false;
         }
+        return true;
     }
 
     @CrossOrigin

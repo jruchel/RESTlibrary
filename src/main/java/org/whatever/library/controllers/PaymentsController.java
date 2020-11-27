@@ -123,6 +123,12 @@ public class PaymentsController {
     }
 
     @CrossOrigin
+    @GetMapping("/currencies")
+    public Currency[] getCurrencies() {
+        return Currency.values();
+    }
+
+    @CrossOrigin
     @GetMapping("/moderator/refunds")
     public List<Refund> getPendingRefunds() {
         return refundService.getRefundsWithStatus("Pending");
