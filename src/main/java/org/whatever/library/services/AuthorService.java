@@ -72,13 +72,11 @@ public class AuthorService {
     }
 
     public List<Author> getAuthorsByName(String firstName, String lastName, int page, int elements) {
-        Pageable pageable = PageRequest.of(page, elements);
-        return authorRepository.findAuthorsByFullName(firstName, lastName, pageable);
+        return authorRepository.findAuthorsByFullName(firstName, lastName, Utils.getPageable(page, elements));
     }
 
     public List<Author> getAuthorsByLastName(String lastName, int page, int elements) {
-        Pageable pageable = PageRequest.of(page, elements);
-        return authorRepository.findAuthorsByLastName(lastName, pageable);
+        return authorRepository.findAuthorsByLastName(lastName, Utils.getPageable(page, elements));
     }
 
     public List<Author> getAuthorsWithBookTitled(String title, int page, int elements) {

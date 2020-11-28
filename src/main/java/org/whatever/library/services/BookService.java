@@ -50,11 +50,11 @@ public class BookService {
     }
 
     public Page<Book> getBookByTitle(String title, int page, int elements) {
-        return bookRepository.getBooksByTitle(title, Utils.getPageable(page, elements));
+        return bookRepository.findByTitle(title, Utils.getPageable(page, elements));
     }
 
     public Page<Book> getBookByTitle(String title, int page) {
-        return bookRepository.getBooksByTitle(title, Utils.getPageable(page));
+        return bookRepository.findByTitle(title, Utils.getPageable(page));
     }
 
     public int getLibrarySize() {

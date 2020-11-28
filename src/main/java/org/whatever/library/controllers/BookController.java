@@ -86,7 +86,7 @@ public class BookController {
 
     @CrossOrigin
     @GetMapping("/search")
-    public Page<Book> findBooks(@RequestBody String title,
+    public Page<Book> findBooks(@RequestParam(required = false, name = "title")  String title,
                                 @RequestParam(required = false, name = "page", defaultValue = "1") int page,
                                 @RequestParam(required = false, name = "elements", defaultValue = "25") int elements) {
         return bookService.getBookByTitle(title, page, elements);

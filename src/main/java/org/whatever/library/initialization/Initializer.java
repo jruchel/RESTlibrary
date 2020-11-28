@@ -40,9 +40,7 @@ public class Initializer {
         user.setPassword(password);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        for (Role r : roleRepository.getAllRoles()) {
-            user.giveRole(r);
-        }
+        user.giveRole(roleRepository.getRoleByName("ROLE_USER"));
         userRepository.save(user);
     }
 
@@ -74,7 +72,7 @@ public class Initializer {
     private void initialize() {
         initializeRoles();
         createAdmin();
-        createUser("user", "admin1");
+        createUser("kuba", "admin1");
     }
 
 }
