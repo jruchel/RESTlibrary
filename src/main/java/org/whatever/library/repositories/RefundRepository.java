@@ -11,4 +11,7 @@ public interface RefundRepository extends CrudRepository<Refund, Integer> {
     @Query(value = "select * from refunds where status = ?1", nativeQuery = true)
     List<Refund> getRefundsWithStatus(String status);
 
+    @Query(value = "select transaction_id from refunds where id = ?1", nativeQuery = true)
+    int getTransactionIDWithRefund(int refundID);
+
 }

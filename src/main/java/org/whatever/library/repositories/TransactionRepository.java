@@ -14,6 +14,9 @@ public interface TransactionRepository extends CrudRepository<Transaction, Integ
     @Query(value = "select * from library.transactions where chargeid = ?1", nativeQuery = true)
     Transaction findByChargeID(String chargeID);
 
+    @Query(value = "select user_id from transactions where id = ?1", nativeQuery = true)
+    int getUserIDWithTransaction(int transactionID);
+
     @Query(value = "select * from library.transactions where time = ?1", nativeQuery = true)
     List<Transaction> findChargeByTime(long time);
 

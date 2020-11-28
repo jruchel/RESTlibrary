@@ -2,10 +2,13 @@ package org.whatever.library.controllers;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.whatever.library.models.Role;
 import org.whatever.library.security.SecurityService;
 import org.whatever.library.models.User;
 import org.whatever.library.services.UserService;
 import org.whatever.library.validation.UserValidator;
+
+import java.util.Set;
 
 @RestController
 public class UserController {
@@ -35,9 +38,21 @@ public class UserController {
     }
 
     @CrossOrigin
+    @GetMapping("/user/moderator/byRefund/{rid}")
+    public User getUserWithRefund(@PathVariable int rid) {
+        return userService.getUserWithRefund(rid);
+    }
+
+    @CrossOrigin
     @GetMapping("/users")
     public User findByUsername(@RequestBody String username) {
         return userService.findByUsername(username);
+    }
+
+    @CrossOrigin
+    @GetMapping("/user/roles")
+    public Set<Role> getCurrentUserRoles() {
+        return userService.getCurrentUser().getRoles();
     }
 
     @CrossOrigin

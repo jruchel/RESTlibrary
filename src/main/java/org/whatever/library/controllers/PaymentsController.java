@@ -108,6 +108,12 @@ public class PaymentsController {
     }
 
     @CrossOrigin
+    @GetMapping("/moderator/transaction/{rid}")
+    public Transaction getTransactionByRefund(@PathVariable int rid) {
+        return transactionService.getTransactionWithRefund(rid);
+    }
+
+    @CrossOrigin
     @PostMapping("/moderator/refund")
     public String resolveRefund(@RequestBody Map<String, String> params) {
         String refundID = params.get("rid");

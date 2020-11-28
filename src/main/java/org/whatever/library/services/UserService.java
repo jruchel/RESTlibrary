@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.whatever.library.models.User;
+import org.whatever.library.repositories.RefundRepository;
+import org.whatever.library.repositories.TransactionRepository;
 import org.whatever.library.repositories.UserRepository;
 
 import java.util.*;
@@ -15,6 +17,10 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
+    @Autowired
+    private RefundRepository refundRepository;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -66,6 +72,10 @@ public class UserService {
         user.setRoles(roleService.getModeratorRoles());
 
         return user;
+    }
+
+    public User getUserWithRefund(int refundID) {
+        return userRepository.findById((long) transactionRepository.getUserIDWithTransaction(refundRepository.getTransactionIDWithRefund(refundID))).orElse(null);
     }
 
     public User createUser(User user) {
