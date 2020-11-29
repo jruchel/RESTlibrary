@@ -47,7 +47,7 @@ public class PaymentsController {
         try {
             charge = paymentService.charge(transactionDetails.getCard(), transactionDetails.getAmount(), transactionDetails.getCurrency());
         } catch (Exception ex) {
-            return ex.getMessage();
+            return "Transaction processing failure";
         }
         try {
             User user = userService.getCurrentUser();
@@ -72,13 +72,10 @@ public class PaymentsController {
 
     @CrossOrigin
     @PostMapping("/user/subscribe")
-    public String subscribe(@RequestBody Card card) {
+    public String subscribe(@RequestBody Transaction subscription) {
         User user = userService.getCurrentUser();
         Role role = roleService.getRoleByName("ROLE_SUBSCRIBER");
         if (user.getRoles().contains(role)) return "You are already subscribed";
-
-        Transaction subscription = new Transaction();
-        subscription.setCard(card);
         subscription.setUser(user);
         subscription.setDescription("Subscription payment");
         subscription.setAmount(Properties.getInstance().getSubscriptionPriceMonthly());

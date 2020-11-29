@@ -34,8 +34,8 @@ public class RentalController {
 
     @CrossOrigin
     @PostMapping("/reserve/{id}")
-    public void reserveBook(@PathVariable int id) {
-        rentalService.reserveBook(userService.getPrincipalUsername(), id);
+    public boolean reserveBook(@PathVariable int id) {
+        return rentalService.reserveBook(userService.getPrincipalUsername(), id);
     }
 
     @CrossOrigin

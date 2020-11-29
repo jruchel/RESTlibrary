@@ -25,15 +25,17 @@ public class RentalService {
     @Autowired
     private UserRepository userRepository;
 
-    public void reserveBook(String username, int bid) {
+    public boolean reserveBook(String username, int bid) {
         if (canReserve(bid, 1)) {
             User user = userRepository.findByUsername(username);
             Book book = getBook(bid);
             if (book != null) {
                 user.reserveBook(book);
                 userRepository.save(user);
+                return true;
             }
         }
+        return false;
     }
 
     public void returnBook(String username, int bid) {
