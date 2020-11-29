@@ -42,6 +42,12 @@ public class AuthorController {
     }
 
     @CrossOrigin
+    @GetMapping("/author/book/{bid}")
+    public Author getAuthorByBookID(@PathVariable int bid) {
+        return authorService.getAuthorByBookID(bid);
+    }
+
+    @CrossOrigin
     @GetMapping("/all")
     public Iterable<Author> getAllAuthors() {
         return authorService.getAllAuthors();

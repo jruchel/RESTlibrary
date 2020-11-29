@@ -11,6 +11,7 @@ import org.whatever.library.repositories.AuthorRepository;
 import org.whatever.library.repositories.BookRepository;
 import org.whatever.library.utils.CollectionUtils;
 import org.whatever.library.utils.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +88,10 @@ public class AuthorService {
         return authors;
     }
 
+    public Author getAuthorByBookID(int bid) {
+        return authorRepository.findById(authorRepository.getAuthorIDByBookID(bid)).orElse(null);
+    }
+
     public List<Author> getAuthorsWithBookTitled(String title, int page) {
         return getAuthorsWithBookTitled(title, page, Properties.getInstance().getPageElements());
     }
@@ -98,6 +103,7 @@ public class AuthorService {
         }
         return authors;
     }
+
     public boolean exists(Author author) {
         return authorRepository.findAuthor(author.getId(), author.getName()) != null;
     }

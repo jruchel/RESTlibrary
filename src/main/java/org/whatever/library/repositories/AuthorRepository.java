@@ -31,6 +31,9 @@ public interface AuthorRepository extends PagingAndSortingRepository<Author, Int
     @Query(value = "select * from authors where name like %?1", nativeQuery = true)
     List<Author> findAuthorsByLastName(String lastName, Pageable pageable);
 
+    @Query(value = "select author_id from books where id = ?1", nativeQuery = true)
+    int getAuthorIDByBookID(int bid);
+
     @Query(value = "select count(*) from authors", nativeQuery = true)
     int getAuthorCount();
 

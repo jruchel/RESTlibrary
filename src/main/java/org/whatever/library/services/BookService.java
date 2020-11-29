@@ -29,7 +29,6 @@ public class BookService {
     }
 
     public Page<Book> getRentedBooks(int page, int elements) {
-
         return bookRepository.getRentedBooks(Utils.getPageable(page, elements));
     }
 
