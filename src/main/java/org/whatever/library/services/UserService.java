@@ -35,6 +35,11 @@ public class UserService {
         return rentingUsers;
     }
 
+    public void revokeRole(User user, String role) {
+        user.revokeRole(role);
+        save(user);
+    }
+
     public List<User> getReservingUsers() {
         Set<Integer> rentingIds = userRepository.getReservingUsers();
         List<User> reservingUsers = new ArrayList<>();

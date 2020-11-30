@@ -58,6 +58,13 @@ public class User {
             this.reservedBooks.add(book);
     }
 
+    public boolean hasRole(String role) {
+        for (Role r : roles) {
+            if (r.getName().contains(role)) return true;
+        }
+        return false;
+    }
+
     public User() {
         this.roles = new HashSet<>();
         this.reservedBooks = new ArrayList<>();

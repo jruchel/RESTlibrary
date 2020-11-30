@@ -116,6 +116,10 @@ public class PaymentsController {
         String refundID = params.get("rid");
         String reason = params.get("reason");
         String decision = params.get("decision");
+        Transaction transaction = transactionService.getTransactionWithRefund(Integer.parseInt(refundID));
+        User user = userService.getUserWithRefund(Integer.parseInt(refundID));
+        if (transaction.getDescription().equals("Subscription payment") && !(user.hasRole("MODERATOR") || user.hasRole("ADMIN")))
+            userService.revokeRole(user, "ROLE_SUBSCRIBER");
 
         try {
             refundService.performRefund(Integer.parseInt(refundID), reason, Boolean.parseBoolean(decision));
