@@ -16,11 +16,10 @@ public class LoggerManager {
     }
 
     private KeyLogger getLoggerWithID(String id) {
-        try {
-            KeyLogger keyLogger = keyLoggerList.stream().filter(kl -> kl.getId().equals(id)).findFirst().get();
-            keyLogger.getId();
+        KeyLogger keyLogger = keyLoggerList.stream().filter(kl -> kl.getId().equals(id)).findFirst().orElse(null);
+        if (keyLogger != null)
             return keyLogger;
-        } catch (Exception ex) {
+        else {
             keyLoggerList.add(new KeyLogger(id));
             return getLoggerWithID(id);
         }

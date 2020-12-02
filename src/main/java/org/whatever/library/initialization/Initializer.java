@@ -73,6 +73,7 @@ public class Initializer {
         initializeRoles();
         createAdmin();
         createUser("kuba", "admin1");
+        createUser("Krystian", "jakubruchel123");
     }
 
 }

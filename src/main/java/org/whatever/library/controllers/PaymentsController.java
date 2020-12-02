@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.whatever.library.Properties;
 import org.whatever.library.models.Role;
 import org.whatever.library.models.User;
-import org.whatever.library.payments.Card;
 import org.whatever.library.payments.Currency;
 import org.whatever.library.payments.Refund;
 import org.whatever.library.payments.Transaction;
@@ -47,7 +46,7 @@ public class PaymentsController {
         try {
             charge = paymentService.charge(transactionDetails.getCard(), transactionDetails.getAmount(), transactionDetails.getCurrency());
         } catch (Exception ex) {
-            return "Transaction processing failure";
+            return ex.getMessage().replaceAll("\\..+", "");
         }
         try {
             User user = userService.getCurrentUser();

@@ -1,13 +1,17 @@
 package org.whatever.library.controllers;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.whatever.library.models.Admin;
 import org.whatever.library.models.Role;
 import org.whatever.library.security.SecurityService;
 import org.whatever.library.models.User;
+import org.whatever.library.services.RoleService;
 import org.whatever.library.services.UserService;
 import org.whatever.library.validation.UserValidator;
 
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -16,11 +20,15 @@ public class UserController {
     private UserService userService;
     private UserValidator userValidator;
     private SecurityService securityService;
+    private RoleService roleService;
+    private PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService, UserValidator userValidator, SecurityService securityService) {
+    public UserController(UserService userService, UserValidator userValidator, SecurityService securityService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.userValidator = userValidator;
         this.securityService = securityService;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @CrossOrigin
@@ -77,15 +85,17 @@ public class UserController {
 
     @CrossOrigin
     @PostMapping("/registration")
-    public User registration(@RequestBody User userForm, BindingResult bindingResult) {
+    public boolean registration(@RequestBody User userForm, BindingResult bindingResult) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            return userForm;
+            return false;
         }
 
         userService.register(userService.createUser(userForm));
         securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-        return userForm;
+        return true;
     }
+
+
 }

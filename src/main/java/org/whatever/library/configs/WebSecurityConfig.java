@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("rental/reserve", "rental/return", "/payments/user/unsubscribe").hasRole("SUBSCRIBER")
                 .antMatchers(HttpMethod.GET, "/authors/**", "/authors").hasRole("USER")
                 .antMatchers("books/count", "books/size", "books/search", "**/user/**", "/payments/user/**", "/books/author/*", "/payments/currencies", "/user/roles").hasRole("USER")
-                .antMatchers("/registration", "/error", "/test/**", "/logger/", "/temp/login").permitAll()
+                .antMatchers("/registration", "/error", "/test/**", "/logger/", "/temp/login", "/temp/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
