@@ -3,7 +3,6 @@ package org.whatever.library.controllers;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.whatever.library.models.Admin;
 import org.whatever.library.models.Role;
 import org.whatever.library.security.SecurityService;
 import org.whatever.library.models.User;
@@ -11,7 +10,6 @@ import org.whatever.library.services.RoleService;
 import org.whatever.library.services.UserService;
 import org.whatever.library.validation.UserValidator;
 
-import java.util.Map;
 import java.util.Set;
 
 @RestController

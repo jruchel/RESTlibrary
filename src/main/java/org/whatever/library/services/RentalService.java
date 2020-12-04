@@ -28,6 +28,7 @@ public class RentalService {
     public boolean reserveBook(String username, int bid) {
         if (canReserve(bid, 1)) {
             User user = userRepository.findByUsername(username);
+            if (!user.hasRole("ROLE_SUBSCRIBER")) return false;
             Book book = getBook(bid);
             if (book != null) {
                 user.reserveBook(book);
