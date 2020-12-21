@@ -5,6 +5,7 @@ import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.whatever.library.Properties;
+import org.whatever.library.models.Book;
 import org.whatever.library.models.Role;
 import org.whatever.library.models.User;
 import org.whatever.library.payments.Currency;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -26,6 +29,8 @@ public class PaymentsController {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private RentalService rentalService;
 
     @Autowired
     private PaymentService paymentService;
@@ -117,14 +122,20 @@ public class PaymentsController {
         String decision = params.get("decision");
         Transaction transaction = transactionService.getTransactionWithRefund(Integer.parseInt(refundID));
         User user = userService.getUserWithRefund(Integer.parseInt(refundID));
-        if (transaction.getDescription().equals("Subscription payment") && !(user.hasRole("MODERATOR") || user.hasRole("ADMIN")))
-            userService.revokeRole(user, "ROLE_SUBSCRIBER");
-
         try {
             refundService.performRefund(Integer.parseInt(refundID), reason, Boolean.parseBoolean(decision));
+            if (transaction.getDescription().equals("Subscription payment") && !(user.hasRole("MODERATOR") && !user.hasRole("ADMIN"))) {
+                userService.revokeRole(user, "ROLE_SUBSCRIBER");
+                List<Integer> bookIds = user.getReservedBooks().stream().map(Book::getId).collect(Collectors.toList());
+                bookIds.forEach(b -> rentalService.cancelReservation(user.getUsername(), b));
+            }
             return "success";
-        } catch (StripeException e) {
-            return e.getMessage();
+        } catch (Exception e) {
+            try {
+                return e.getMessage();
+            } catch (Exception ex) {
+                return ex.getMessage();
+            }
         }
     }
 
