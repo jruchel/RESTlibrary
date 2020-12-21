@@ -1,5 +1,5 @@
 package org.whatever.library.payments;
 
 public enum Currency {
-    USD, PLN, EUR, GBP
+    USD, PLN, EUR, GBP, RUB;
 }
