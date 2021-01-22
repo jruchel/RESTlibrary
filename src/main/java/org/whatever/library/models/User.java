@@ -1,8 +1,6 @@
 package org.whatever.library.models;
 
 
-import lombok.Getter;
-import lombok.Setter;
 import org.whatever.library.payments.Transaction;
 
 import javax.persistence.*;
@@ -11,11 +9,73 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "users")
 public class User {
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public List<Book> getReservedBooks() {
+        return reservedBooks;
+    }
+
+    public void setReservedBooks(List<Book> reservedBooks) {
+        this.reservedBooks = reservedBooks;
+    }
+
+    public List<Book> getRentedBooks() {
+        return rentedBooks;
+    }
+
+    public void setRentedBooks(List<Book> rentedBooks) {
+        this.rentedBooks = rentedBooks;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

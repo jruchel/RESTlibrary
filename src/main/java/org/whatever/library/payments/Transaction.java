@@ -1,8 +1,6 @@
 package org.whatever.library.payments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
 import org.whatever.library.models.User;
 
 import javax.persistence.*;
@@ -11,11 +9,85 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "transactions")
 public class Transaction {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    public String getChargeID() {
+        return chargeID;
+    }
+
+    public void setChargeID(String chargeID) {
+        this.chargeID = chargeID;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public boolean isRefunded() {
+        return refunded;
+    }
+
+    public void setRefunded(boolean refunded) {
+        this.refunded = refunded;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Refund> getRefunds() {
+        return refunds;
+    }
+
+    public void setRefunds(List<Refund> refunds) {
+        this.refunds = refunds;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Id
     @Column(name = "id")

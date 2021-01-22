@@ -1,14 +1,47 @@
 package org.whatever.library.payments;
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
 public class Card {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
+    }
+
+    public int getExpirationMonth() {
+        return expirationMonth;
+    }
+
+    public void setExpirationMonth(int expirationMonth) {
+        this.expirationMonth = expirationMonth;
+    }
+
+    public int getExpirationYear() {
+        return expirationYear;
+    }
+
+    public void setExpirationYear(int expirationYear) {
+        this.expirationYear = expirationYear;
+    }
+
+    public int getCvc() {
+        return cvc;
+    }
+
+    public void setCvc(int cvc) {
+        this.cvc = cvc;
+    }
 
     private int id;
     private long number;

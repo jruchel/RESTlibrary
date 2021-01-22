@@ -1,5 +1,6 @@
 package org.whatever.library.models;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.whatever.library.services.UserService;

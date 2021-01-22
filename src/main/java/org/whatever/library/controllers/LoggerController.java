@@ -1,6 +1,6 @@
 package org.whatever.library.controllers;
 
-import javafx.util.Pair;
+import org.whatever.library.utils.Pair;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,7 +1,6 @@
 package org.whatever.library.models;
 
-import lombok.Getter;
-import lombok.Setter;
+
 import org.whatever.library.validation.NameConstraint;
 
 import javax.persistence.*;
@@ -11,11 +10,30 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+
 @Entity
 @Table(name = "authors")
 public class Author {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Book> getBibliography() {
+        return bibliography;
+    }
 
     @Id
     @Column(name = "id")
